@@ -23,7 +23,7 @@ public struct Environment {
     
     /// This is the list of common headers which will be part of each Request
     /// Some headers value maybe overwritten by Request's own headers
-    public var headers: [String: Any] = [:]
+    public var headers: [String: Any] = ["Content-Type":"application/json"]
     
     /// Cache policy
     public var cachePolicy: URLRequest.CachePolicy = .reloadIgnoringLocalAndRemoteCacheData

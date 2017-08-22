@@ -7,30 +7,36 @@
 //
 
 import Foundation
-import SwiftyJSON
+import Alamofire
 
-/// Parse the Response
-public enum Response {
-    case json(_: JSON)
-    case data(_: Data)
-    case error(_: Int?, _: Error?)
+public class Response {
     
-    init(_ response: (r: HTTPURLResponse?, data: Data?, error: Error?), for request: Request) {
-        guard response.r?.statusCode == 200, response.error == nil else {
-            self = .error(response.r?.statusCode, response.error)
+    public typealias JSON = [String : Any]
+    
+    var json: JSON?
+    var data: Data?
+    var error: Error?
+    
+    init(_ dataResponse: DataResponse<Any>, for request: Request) {
+        
+        guard dataResponse.response?.statusCode == 200, dataResponse.error == nil else {
+            self.error = dataResponse.error
             return
         }
-        
-        guard let data = response.data else {
-            self = .error(response.r?.statusCode, NetworkErrors.noData)
+        guard let data = dataResponse.data else {
+            self.error = NetworkErrors.noData
+            return
+        }
+        guard let json = dataResponse.result.value as? JSON else {
+            self.error = NetworkErrors.noData
             return
         }
         
         switch request.dataType {
         case .Data:
-            self = .data(data)
+            self.data = data
         case .JSON:
-            self = .json(JSON(data: data))
+            self.json = json
         }
     }
 }

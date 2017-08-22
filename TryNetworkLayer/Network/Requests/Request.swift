@@ -31,7 +31,7 @@ public protocol Request {
 
     /// These are the parameters we need to send along with the call.
     /// Params can be passed into the body or along with the URL
-    var parameters: RequestParams { get }
+    var parameters: RequestParams? { get }
 
     /// You may also define a list of headers to pass along with each request.
     var headers: [String: Any]? { get }

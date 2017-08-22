@@ -13,22 +13,17 @@ import Alamofire
 /// by calling the underlyning layer (maybe URLSession, Alamofire
 /// or just a fake dispatcher which return mocked results).
 /// As output for a Request it should provide a Response.
-public protocol Dispatcher {
-    
-    associatedtype Response
+protocol Dispatcher {
     
     /// Configure the dispatcher with an environment
     ///
     /// - Parameter environment: environment configuration
     init(environment: Environment)
     
-    
-    
     /// This function execute the request and provide a Promise
     /// with the response.
     ///
     /// - Parameter request: request to execute
-    /// - Returns: promise
-    func execute(request: Request) throws -> Response
+    func execute(request: Request, completion: @escaping (_ response: Response) -> Void) throws
     
 }

@@ -8,18 +8,20 @@
 
 import Foundation
 
+enum OperationErrors: Error {
+    case badMapping
+}
+
 protocol Operation {
     
-    associatedtype Output
+    associatedtype D
+    associatedtype R
     
     /// Request to execute
     var request: Request { get }
     
-
     /// Execute request in passed dispatcher
     ///
     /// - Parameter dispatcher: dispatcher
-    /// - Returns: a promise
-    func execute(in dispatcher: Dispatcher) -> Output
-    
+    func execute(in dispatcher: D, completion: @escaping (_ result: R?, _ error: Error?) -> Void)
 }
