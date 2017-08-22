@@ -11,14 +11,14 @@ import Foundation
 public enum UserRequests: Request {
     
     case login(username: String, password: String)
-    case users
+    case searchUsers(query: String)
     
     public var path: String {
         switch self {
         case .login(_,_):
             return "login"
-        case .users:
-            return "users"
+        case .searchUsers(_):
+            return "search/users"
         }
     }
     
@@ -26,7 +26,7 @@ public enum UserRequests: Request {
         switch self {
         case .login(_,_):
             return .post
-        case .users(_):
+        case .searchUsers(_):
             return .get
         }
     }
@@ -35,8 +35,8 @@ public enum UserRequests: Request {
         switch self {
         case .login(let username, let password):
             return .body(["user" : username, "pass" : password])
-        case .users:
-            return nil
+        case .searchUsers(let query):
+            return .url(["q" : query])
         }
     }
     
@@ -51,7 +51,7 @@ public enum UserRequests: Request {
         switch self {
         case .login(_,_):
             return .JSON
-        case .users(_):
+        case .searchUsers(_):
             return .JSON
         }
     }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		65574E4F1F4CB28B000D717E /* GHSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65574E4E1F4CB28B000D717E /* GHSearchResponse.swift */; };
 		65BBB94B1F4B3425001A378C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BBB94A1F4B3425001A378C /* AppDelegate.swift */; };
 		65BBB94D1F4B3425001A378C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BBB94C1F4B3425001A378C /* ViewController.swift */; };
 		65BBB9501F4B3425001A378C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65BBB94E1F4B3425001A378C /* Main.storyboard */; };
@@ -40,6 +41,7 @@
 		0836DE4AD52DBF6BA81CBA10 /* Pods-TryNetworkLayerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TryNetworkLayerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TryNetworkLayerTests/Pods-TryNetworkLayerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		33C93B304CAF494F6F0CBDE3 /* Pods_TryNetworkLayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TryNetworkLayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		481957511129CFD30FF2FAB7 /* Pods-TryNetworkLayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TryNetworkLayer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TryNetworkLayer/Pods-TryNetworkLayer.debug.xcconfig"; sourceTree = "<group>"; };
+		65574E4E1F4CB28B000D717E /* GHSearchResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GHSearchResponse.swift; sourceTree = "<group>"; };
 		65BBB9471F4B3425001A378C /* TryNetworkLayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TryNetworkLayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65BBB94A1F4B3425001A378C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65BBB94C1F4B3425001A378C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 		65BBB98D1F4C20EF001A378C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				65574E4E1F4CB28B000D717E /* GHSearchResponse.swift */,
 				65BBB98E1F4C20EF001A378C /* GHUser.swift */,
 			);
 			path = Models;
@@ -403,6 +406,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65BBB98F1F4C20EF001A378C /* GHUser.swift in Sources */,
+				65574E4F1F4CB28B000D717E /* GHSearchResponse.swift in Sources */,
 				65BBB94D1F4B3425001A378C /* ViewController.swift in Sources */,
 				65BBB98B1F4C1BFE001A378C /* UserRequests.swift in Sources */,
 				65BBB98A1F4C1BFE001A378C /* Request.swift in Sources */,

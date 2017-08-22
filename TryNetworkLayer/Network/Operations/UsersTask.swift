@@ -14,16 +14,23 @@ class UsersTask: Operation {
     typealias D = Dispatcher
     typealias R = [GHUser]
     
+    
+    var query: String
+    
+    init(query: String) {
+        self.query = query
+    }
+    
     var request: Request {
-        return UserRequests.users
+        return UserRequests.searchUsers(query: self.query)
     }
     
     func execute(in dispatcher: Dispatcher, completion: @escaping (_ user: [GHUser]?, _ error: Error?) -> Void) {
         do {
             try dispatcher.execute(request: self.request, completion: { (response: Response) in
                 
-                if let object = Mapper<GHUser>().mapArray(JSONObject: response.json) {
-                    completion(object, nil)
+                if let json = response.json, let object = Mapper<GHSearchResponse>().map(JSON: json) {
+                    completion(object.items, nil)
                 } else if let error = response.error {
                     completion(nil, error)
                 }

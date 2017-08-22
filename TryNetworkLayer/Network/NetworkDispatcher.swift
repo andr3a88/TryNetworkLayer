@@ -17,7 +17,7 @@ public enum NetworkErrors: Error {
 public class NetworkDispatcher: Dispatcher {
     
     private var environment: Environment
-    private var session: SessionManager
+    private var sessionManager: SessionManager
     
     required public init(environment: Environment) {
         self.environment = environment
@@ -33,12 +33,12 @@ public class NetworkDispatcher: Dispatcher {
         configuration.httpCookieStorage = HTTPCookieStorage.shared
         configuration.httpShouldSetCookies = false
         
-        self.session = Alamofire.SessionManager(configuration: configuration)
+        self.sessionManager = Alamofire.SessionManager(configuration: configuration)
     }
     
     public func execute(request: Request, completion: @escaping (_ response: Response) -> Void) throws {
         let rq = try self.prepareURLRequest(for: request)
-        self.session.request(rq)
+        self.sessionManager.request(rq)
             .validate()
             .responseJSON { response in
                 completion(Response(response, for: request))

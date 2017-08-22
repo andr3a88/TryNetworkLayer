@@ -11,7 +11,7 @@ import UIKit
 class ViewController: UIViewController {
     
     let dispatcher = NetworkDispatcher(environment: Environment("Github", host: "https://api.github.com"))
-    let usersTask = UsersTask()
+    let usersTask = UsersTask(query: "language:swift")
     
     override func viewDidLoad() {
         super.viewDidLoad()
