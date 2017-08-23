@@ -10,15 +10,14 @@ import Foundation
 
 /// Define the type of data we expect as response
 ///
-/// - JSON: it's a json
-/// - Data: it's plain data
+/// - JSON: json data
+/// - Data: plain data
 public enum DataType {
     case JSON
     case Data
 }
 
-/// This is the Request protocol you may implement as enum
-/// or as a classic class object for each kind of request.
+/// This is the Request protocol you may implement as classic class object for each kind of request.
 public protocol Request {
 
     /// Relative path of the endpoint we want to call (ie. `/users/login`)

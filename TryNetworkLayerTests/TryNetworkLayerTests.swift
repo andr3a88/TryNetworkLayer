@@ -16,7 +16,6 @@ class NetworkLayerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        
     }
     
     override func tearDown() {
@@ -105,10 +104,12 @@ extension XCTestCase {
     struct MockGHUser {
         static let organizationsUrl = "aaaa"
         static let score = 1.0
+        static let reposUrl = "bbbb"
         
         func JSON() -> Any? {
             return ["organizations_url": MockGHUser.organizationsUrl,
-                    "score": MockGHUser.score]
+                    "score": MockGHUser.score,
+                    "repos_url": MockGHUser.reposUrl]
         }
     }
     
@@ -119,7 +120,7 @@ extension XCTestCase {
     //                     failure: ((NSError) -> Void)?) {
     //            success?(MockSignUp().JSON())
     //        }
-    //        
+    //
     //        internal func cancel() {}
     //    }
     

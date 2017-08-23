@@ -14,7 +14,7 @@ class UsersTask: Operation {
     typealias D = Dispatcher
     typealias R = [GHUser]
     
-    
+    // MARK: Request parameters
     var query: String
     
     init(query: String) {
@@ -35,7 +35,6 @@ class UsersTask: Operation {
                     completion(nil, error)
                 }
             })
-            
         } catch (let error) {
             print("Network error \(error.localizedDescription)")
         }

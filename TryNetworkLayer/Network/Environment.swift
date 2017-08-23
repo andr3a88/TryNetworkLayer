@@ -8,11 +8,7 @@
 
 import Foundation
 
-/// Environment is a struct which encapsulate all the informations
-/// we need to perform a setup of our Networking Layer.
-/// In this example we just define the name of the environment (ie. Production,
-/// Test Environment #1 and so on) and the base url to complete requests.
-/// You may also want to include any SSL certificate or wethever you need.
+/// Environment is a struct which encapsulate all the informations we need to perform a setup of our Networking Layer.
 public struct Environment {
     
     /// Name of the environment
@@ -23,7 +19,7 @@ public struct Environment {
     
     /// This is the list of common headers which will be part of each Request
     /// Some headers value maybe overwritten by Request's own headers
-    public var headers: [String: Any] = ["Content-Type":"application/json"]
+    public var headers: [String: Any] = [:]
     
     /// Cache policy
     public var cachePolicy: URLRequest.CachePolicy = .reloadIgnoringLocalAndRemoteCacheData
