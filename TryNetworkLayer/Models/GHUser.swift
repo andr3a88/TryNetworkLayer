@@ -29,7 +29,7 @@ public final class GHUser: Mappable {
 
   // MARK: Properties
   public var organizationsUrl: String?
-  public var score: Float?
+  public var score: Int?
   public var reposUrl: String?
   public var htmlUrl: String?
   public var gravatarId: String?
