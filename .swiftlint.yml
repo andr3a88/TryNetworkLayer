@@ -1,0 +1,84 @@
+disabled_rules:
+    - missing_docs
+    - force_cast
+    - force_try
+    - variable_name
+    - type_name
+    - trailing_whitespace
+
+opt_in_rules: # some rules are only opt-in
+    - empty_count
+    - missing_docs
+
+# Find all the available rules by running:
+# swiftlint rules
+included: # paths to include during linting. `--path` is ignored if present.
+    - TryNetworkLayer
+
+excluded: # paths to ignore during linting. Takes precedence over `included`.
+    - Pods
+
+# configurable rules can be customized from this configuration file
+# binary rules can set their severity level
+force_cast: warning # implicitly
+force_try:
+severity: warning # explicitly
+empty_count: warning
+
+# rules that have both warning and error levels, can set just the warning level
+# implicitly
+line_length: 180
+
+# they can set both implicitly with an array
+type_body_length:
+    - 800 # warning
+    - 1000 # error
+# or they can set both explicitly
+
+file_length:
+    warning: 800
+    error: 1200
+
+# naming rules can set warnings/errors for min_length and max_length
+# additionally they can set excluded names
+type_name:
+    min_length: 3 # only warning
+    max_length: # warning and error
+        warning: 40
+        error: 50
+
+    excluded: iPhone # excluded via string
+
+variable_name:
+    min_length:  # only min_length
+        error: 2 # only error
+
+    excluded: # excluded via string array
+        - id
+        - URL
+        - GlobalAPIKey
+        - Log
+
+reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, junit, html, emoji)
+
+custom_rules:
+    comments_space: # From https://github.com/brandenr/swiftlintconfig
+        name: "Space After Comment"
+        regex: "(^ *//\w+)"
+        message: "There should be a space after //"
+        severity: error
+
+    force_https: # From https://github.com/Twigz/Game
+        name: "Force HTTPS over HTTP"
+        regex: "((?i)http(?!s))"
+        match_kinds: string
+        message: "HTTPS should be favored over HTTP"
+        severity: warning
+
+    double_space: # From https://github.com/IBM-Swift/Package-Builder
+        include: "*.swift"
+        name: "Double space"
+        regex: "([a-z,A-Z] \s+)"
+        message: "Double space between keywords"
+        match_kinds: keyword
+        severity: warning

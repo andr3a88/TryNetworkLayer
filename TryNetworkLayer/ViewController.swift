@@ -10,20 +10,14 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let dispatcher = NetworkDispatcher(environment: Environment("Github", host: "https://api.github.com"))
-    let usersTask = UsersTask(query: "language:swift")
+    let usersRepo = UsersRepo()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        usersTask.execute(in: dispatcher) { (users, error) in
-            
-            if let users = users {
-                for user in users {
-                    print("\(String(describing: user.login))")
-                }
-            } else if let error = error {
-                print("\(String(describing: error.localizedDescription))")
+        usersRepo.fetch { (users) in
+            for user in users {
+                print("\(String(describing: user.login))")
             }
         }
     }
@@ -33,4 +27,3 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 }
-

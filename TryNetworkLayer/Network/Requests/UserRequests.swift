@@ -15,7 +15,7 @@ public enum UserRequests: Request {
     
     public var path: String {
         switch self {
-        case .login(_,_):
+        case .login(_, _):
             return "login"
         case .searchUsers(_):
             return "search/users"
@@ -24,7 +24,7 @@ public enum UserRequests: Request {
     
     public var method: HTTPMethod {
         switch self {
-        case .login(_,_):
+        case .login(_, _):
             return .post
         case .searchUsers(_):
             return .get
@@ -49,7 +49,7 @@ public enum UserRequests: Request {
     
     public var dataType: DataType {
         switch self {
-        case .login(_,_):
+        case .login(_, _):
             return .JSON
         case .searchUsers(_):
             return .JSON

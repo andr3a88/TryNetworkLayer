@@ -26,7 +26,7 @@ public final class GHSearchResponse: Mappable {
   /// Map a JSON object to this class using ObjectMapper.
   ///
   /// - parameter map: A mapping from ObjectMapper.
-  public required init?(map: Map){
+  public required init?(map: Map) {
 
   }
 

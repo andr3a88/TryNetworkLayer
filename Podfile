@@ -7,6 +7,7 @@ target 'TryNetworkLayer' do
   # Pods for TryNetworkLayer
   pod 'Alamofire', '~> 4.5'
   pod 'ObjectMapper', '~> 2.2'
+  pod 'RealmSwift'
   
   target 'TryNetworkLayerTests' do
     inherit! :search_paths

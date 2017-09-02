@@ -13,8 +13,8 @@ import ObjectMapper
 class UsersTaskTests: XCTestCase {
     
     let dispatcher = NetworkDispatcher(environment: Environment("Github", host: "https://api.github.com"))
-    let usersTask = UsersTask(query: "language:swift")
     
+    let usersTask = UsersTask(query: "language:swift")
     let mockUserTask = MockUserTask(query: "language:swift")
     
     override func setUp() {
@@ -36,11 +36,11 @@ class UsersTaskTests: XCTestCase {
     }
     
     func testUserMapper() {
-        let object = Mapper<GHUser>().map(JSON: MockGHUser().JSON())!
+        let object = Mapper<GHUser>().map(JSON: MockGHUser(id: 1).JSON())!
         
         XCTAssertNotNil(object)
         XCTAssertEqual(object.organizationsUrl!, "url")
-        XCTAssertEqual(object.score!, 1)
+        XCTAssertEqual(object.score, 1)
         XCTAssertEqual(object.reposUrl!, "url")
         XCTAssertEqual(object.htmlUrl!, "url")
         XCTAssertEqual(object.gravatarId!, "id")
@@ -48,7 +48,7 @@ class UsersTaskTests: XCTestCase {
         XCTAssertEqual(object.type!, "user")
         XCTAssertEqual(object.login!, "url")
         XCTAssertEqual(object.followersUrl!, "url")
-        XCTAssertEqual(object.id!, 123456)
+        XCTAssertEqual(object.id, 1)
         XCTAssertEqual(object.receivedEventsUrl!, "url")
         XCTAssertEqual(object.subscriptionsUrl!, "url")
         XCTAssertEqual(object.url!, "url")
@@ -78,7 +78,7 @@ class UsersTaskTests: XCTestCase {
 struct MockSearchResponse {
     static let incompleteResults = false
     static let totalCount = 800
-    static let items = [MockGHUser().JSON(), MockGHUser().JSON()]
+    static let items = [MockGHUser(id: 1).JSON(), MockGHUser(id: 2).JSON()]
     
     func JSON() -> [String: Any] {
         return ["incomplete_results": MockSearchResponse.incompleteResults,
@@ -97,10 +97,15 @@ struct MockGHUser {
     static let type = "user"
     static let login = "url"
     static let followersUrl = "url"
-    static let id = 123456
     static let subscriptionsUrl = "url"
     static let receivedEventsUrl = "url"
     static let url = "url"
+    
+    var id = 123456
+    
+    init(id: Int) {
+        self.id = id
+    }
     
     func JSON() -> [String: Any] {
         return ["organizations_url": MockGHUser.organizationsUrl,
@@ -112,7 +117,7 @@ struct MockGHUser {
                 "type": MockGHUser.type,
                 "login": MockGHUser.login,
                 "followers_url": MockGHUser.followersUrl,
-                "id": MockGHUser.id,
+                "id": id,
                 "subscriptions_url": MockGHUser.subscriptionsUrl,
                 "received_events_url": MockGHUser.receivedEventsUrl,
                 "url": MockGHUser.url]
@@ -136,7 +141,8 @@ class MockUserTask: TryNetworkLayer.Operation {
     }
     
     func execute(in dispatcher: Dispatcher, completion: @escaping (_ user: [GHUser]?, _ error: Error?) -> Void) {
-        let object = Mapper<GHUser>().map(JSON: MockGHUser().JSON())!
-        completion([object, object], nil)
+        let object1 = Mapper<GHUser>().map(JSON: MockGHUser(id: 1).JSON())!
+        let object2 = Mapper<GHUser>().map(JSON: MockGHUser(id: 2).JSON())!
+        completion([object1, object2], nil)
     }
 }
