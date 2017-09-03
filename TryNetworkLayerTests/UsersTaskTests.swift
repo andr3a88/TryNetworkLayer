@@ -65,7 +65,7 @@ class UsersTaskTests: XCTestCase {
     }
     
     func testSearchUserTask() {
-        let expectedResult = expectation(description: "Async request")
+        let expectedResult = expectation(description: "Async real request")
         
         mockUserTask.execute(in: dispatcher) { (users, error) in
             XCTAssertEqual(users?.count, 2)

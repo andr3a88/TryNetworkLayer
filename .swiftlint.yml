@@ -5,6 +5,7 @@ disabled_rules:
     - variable_name
     - type_name
     - trailing_whitespace
+    - cyclomatic_complexity
 
 opt_in_rules: # some rules are only opt-in
     - empty_count

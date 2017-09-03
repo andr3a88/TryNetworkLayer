@@ -13,9 +13,16 @@
 		65197A551F5AAD26007C8C64 /* RealmStorageContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65197A541F5AAD26007C8C64 /* RealmStorageContext.swift */; };
 		65197A591F5AAD9D007C8C64 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 65197A581F5AAD9D007C8C64 /* .swiftlint.yml */; };
 		65197A5C1F5AB4BB007C8C64 /* UsersRepoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65197A5B1F5AB4BB007C8C64 /* UsersRepoTests.swift */; };
+		65197A601F5C1360007C8C64 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 65197A5F1F5C1360007C8C64 /* README.md */; };
+		65197A621F5CAE49007C8C64 /* GHUserDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65197A611F5CAE49007C8C64 /* GHUserDetail.swift */; };
+		65197A641F5CB0DD007C8C64 /* UserDetailTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65197A631F5CB0DD007C8C64 /* UserDetailTask.swift */; };
+		65197A661F5CB131007C8C64 /* UserDetailTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65197A651F5CB131007C8C64 /* UserDetailTaskTests.swift */; };
+		65197A711F5CB269007C8C64 /* UserDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65197A6D1F5CB269007C8C64 /* UserDetailViewController.swift */; };
+		65197A721F5CB269007C8C64 /* UserDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65197A6E1F5CB269007C8C64 /* UserDetailViewModel.swift */; };
+		65197A731F5CB269007C8C64 /* UsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65197A6F1F5CB269007C8C64 /* UsersViewController.swift */; };
+		65197A741F5CB269007C8C64 /* UsersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65197A701F5CB269007C8C64 /* UsersViewModel.swift */; };
 		65574E4F1F4CB28B000D717E /* GHSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65574E4E1F4CB28B000D717E /* GHSearchResponse.swift */; };
 		65BBB94B1F4B3425001A378C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BBB94A1F4B3425001A378C /* AppDelegate.swift */; };
-		65BBB94D1F4B3425001A378C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BBB94C1F4B3425001A378C /* ViewController.swift */; };
 		65BBB9501F4B3425001A378C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65BBB94E1F4B3425001A378C /* Main.storyboard */; };
 		65BBB9521F4B3425001A378C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65BBB9511F4B3425001A378C /* Assets.xcassets */; };
 		65BBB9551F4B3425001A378C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65BBB9531F4B3425001A378C /* LaunchScreen.storyboard */; };
@@ -53,10 +60,17 @@
 		65197A541F5AAD26007C8C64 /* RealmStorageContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmStorageContext.swift; sourceTree = "<group>"; };
 		65197A581F5AAD9D007C8C64 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
 		65197A5B1F5AB4BB007C8C64 /* UsersRepoTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersRepoTests.swift; sourceTree = "<group>"; };
+		65197A5F1F5C1360007C8C64 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		65197A611F5CAE49007C8C64 /* GHUserDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GHUserDetail.swift; sourceTree = "<group>"; };
+		65197A631F5CB0DD007C8C64 /* UserDetailTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailTask.swift; sourceTree = "<group>"; };
+		65197A651F5CB131007C8C64 /* UserDetailTaskTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailTaskTests.swift; sourceTree = "<group>"; };
+		65197A6D1F5CB269007C8C64 /* UserDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailViewController.swift; sourceTree = "<group>"; };
+		65197A6E1F5CB269007C8C64 /* UserDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailViewModel.swift; sourceTree = "<group>"; };
+		65197A6F1F5CB269007C8C64 /* UsersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersViewController.swift; sourceTree = "<group>"; };
+		65197A701F5CB269007C8C64 /* UsersViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersViewModel.swift; sourceTree = "<group>"; };
 		65574E4E1F4CB28B000D717E /* GHSearchResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GHSearchResponse.swift; sourceTree = "<group>"; };
 		65BBB9471F4B3425001A378C /* TryNetworkLayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TryNetworkLayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65BBB94A1F4B3425001A378C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		65BBB94C1F4B3425001A378C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		65BBB94F1F4B3425001A378C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		65BBB9511F4B3425001A378C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		65BBB9541F4B3425001A378C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -116,9 +130,21 @@
 			path = Repository;
 			sourceTree = "<group>";
 		};
+		65197A6C1F5CB250007C8C64 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				65197A6D1F5CB269007C8C64 /* UserDetailViewController.swift */,
+				65197A6E1F5CB269007C8C64 /* UserDetailViewModel.swift */,
+				65197A6F1F5CB269007C8C64 /* UsersViewController.swift */,
+				65197A701F5CB269007C8C64 /* UsersViewModel.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		65BBB93E1F4B3425001A378C = {
 			isa = PBXGroup;
 			children = (
+				65197A5F1F5C1360007C8C64 /* README.md */,
 				65197A581F5AAD9D007C8C64 /* .swiftlint.yml */,
 				65BBB9491F4B3425001A378C /* TryNetworkLayer */,
 				65BBB95E1F4B3425001A378C /* TryNetworkLayerTests */,
@@ -142,7 +168,7 @@
 			children = (
 				65BBB9511F4B3425001A378C /* Assets.xcassets */,
 				65BBB94A1F4B3425001A378C /* AppDelegate.swift */,
-				65BBB94C1F4B3425001A378C /* ViewController.swift */,
+				65197A6C1F5CB250007C8C64 /* Controllers */,
 				65BBB98D1F4C20EF001A378C /* Models */,
 				65197A511F5AAA20007C8C64 /* Repository */,
 				65197A4C1F5AA951007C8C64 /* Storage */,
@@ -159,6 +185,7 @@
 			children = (
 				65197A5B1F5AB4BB007C8C64 /* UsersRepoTests.swift */,
 				65BBB95F1F4B3425001A378C /* UsersTaskTests.swift */,
+				65197A651F5CB131007C8C64 /* UserDetailTaskTests.swift */,
 				65BBB9611F4B3425001A378C /* Info.plist */,
 			);
 			path = TryNetworkLayerTests;
@@ -182,6 +209,7 @@
 			children = (
 				65BBB9801F4C1BFE001A378C /* Operation.swift */,
 				65BBB97F1F4C1BFE001A378C /* UsersTask.swift */,
+				65197A631F5CB0DD007C8C64 /* UserDetailTask.swift */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
@@ -198,8 +226,9 @@
 		65BBB98D1F4C20EF001A378C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				65574E4E1F4CB28B000D717E /* GHSearchResponse.swift */,
+				65197A611F5CAE49007C8C64 /* GHUserDetail.swift */,
 				65BBB98E1F4C20EF001A378C /* GHUser.swift */,
+				65574E4E1F4CB28B000D717E /* GHSearchResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -393,7 +422,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n    echo \"\" >/dev/null;\n    #swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+			shellScript = "if which swiftlint >/dev/null; then\n    echo \"\" >/dev/null;\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
 		};
 		C010EB67F28461E7D71DB074 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -436,14 +465,20 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-TryNetworkLayer/Pods-TryNetworkLayer-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Bond/Bond.framework",
+				"${BUILT_PRODUCTS_DIR}/Diff/Diff.framework",
 				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
+				"${BUILT_PRODUCTS_DIR}/ReactiveKit/ReactiveKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bond.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Diff.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 			);
@@ -461,11 +496,16 @@
 			files = (
 				65BBB98F1F4C20EF001A378C /* GHUser.swift in Sources */,
 				65197A501F5AA9DC007C8C64 /* StorageContext.swift in Sources */,
+				65197A721F5CB269007C8C64 /* UserDetailViewModel.swift in Sources */,
 				65574E4F1F4CB28B000D717E /* GHSearchResponse.swift in Sources */,
-				65BBB94D1F4B3425001A378C /* ViewController.swift in Sources */,
 				65BBB98B1F4C1BFE001A378C /* UserRequests.swift in Sources */,
+				65197A641F5CB0DD007C8C64 /* UserDetailTask.swift in Sources */,
+				65197A621F5CAE49007C8C64 /* GHUserDetail.swift in Sources */,
 				65BBB98A1F4C1BFE001A378C /* Request.swift in Sources */,
+				65197A601F5C1360007C8C64 /* README.md in Sources */,
 				65BBB9891F4C1BFE001A378C /* Operation.swift in Sources */,
+				65197A731F5CB269007C8C64 /* UsersViewController.swift in Sources */,
+				65197A741F5CB269007C8C64 /* UsersViewModel.swift in Sources */,
 				65BBB98C1F4C1BFE001A378C /* Response.swift in Sources */,
 				65197A531F5AAA52007C8C64 /* UsersRepo.swift in Sources */,
 				65BBB9881F4C1BFE001A378C /* UsersTask.swift in Sources */,
@@ -473,6 +513,7 @@
 				65BBB94B1F4B3425001A378C /* AppDelegate.swift in Sources */,
 				65BBB9871F4C1BFE001A378C /* NetworkDispatcher.swift in Sources */,
 				65197A4E1F5AA976007C8C64 /* Storable.swift in Sources */,
+				65197A711F5CB269007C8C64 /* UserDetailViewController.swift in Sources */,
 				65BBB9851F4C1BFE001A378C /* Dispatcher.swift in Sources */,
 				65197A551F5AAD26007C8C64 /* RealmStorageContext.swift in Sources */,
 			);
@@ -483,6 +524,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65197A5C1F5AB4BB007C8C64 /* UsersRepoTests.swift in Sources */,
+				65197A661F5CB131007C8C64 /* UserDetailTaskTests.swift in Sources */,
 				65BBB9601F4B3425001A378C /* UsersTaskTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

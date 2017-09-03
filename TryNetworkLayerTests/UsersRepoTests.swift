@@ -9,6 +9,32 @@
 import XCTest
 @testable import TryNetworkLayer
 
+class UsersRepoTests: XCTestCase {
+    
+    let mockUsersRepo = MockUsersRepo()
+    let usersRepo = UsersRepo()
+    
+    override func setUp() {
+        super.setUp()
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+    }
+    
+    override func tearDown() {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        super.tearDown()
+    }
+    
+    func testMockFetch() {
+        let expectedResult = expectation(description: "Async mock request")
+        
+        mockUsersRepo.fetch(fromStorage: false, query: "language:swift") { (users) in
+            XCTAssertEqual(users.count, 2)
+            expectedResult.fulfill()
+        }
+        waitForExpectations(timeout: 10, handler:nil)
+    }
+}
+
 class MockUsersRepo: UsersRepoProtocol {
     
     let storage = try! RealmStorageContext(configuration: ConfigurationType.inMemory(identifier: "test"))
@@ -16,19 +42,24 @@ class MockUsersRepo: UsersRepoProtocol {
     
     let usersTask = MockUserTask(query: "language:swift")
     
-    func fetch(block: @escaping (_ users: [GHUser]) -> Void) {
+    func fetch(fromStorage: Bool = true, query: String, block: @escaping (_ users: [GHUser]) -> Void) {
         
+        if fromStorage {
+            let sort = Sorted(key: "login", ascending: false)
+            self.storage.fetch(GHUser.self, predicate: nil, sorted: sort, completion: { (users) in
+                block(users)
+            })
+            return
+        }
+        
+        usersTask.query = query
         usersTask.execute(in: dispatcher) { [unowned self] (users, error) in
             
             if let users = users {
                 for user in users {
-                    print("\(String(describing: user.login))")
                     self.create(user: user)
                 }
-                let sort = Sorted(key: "id", ascending: false)
-                self.storage.fetch(GHUser.self, predicate: nil, sorted: sort, completion: { (users) in
-                    block(users)
-                })
+                block(users)
             } else if let error = error {
                 print("\(String(describing: error.localizedDescription))")
             }
@@ -57,41 +88,5 @@ class MockUsersRepo: UsersRepoProtocol {
             try self.storage.delete(object: user)
         } catch _ as NSError {
         }
-    }
-}
-
-class UsersRepoTests: XCTestCase {
-    
-    let mockUsersRepo = MockUsersRepo()
-    let usersRepo = UsersRepo()
-    
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    func testMockFetch() {
-        let expectedResult = expectation(description: "Async mock request")
-        
-        mockUsersRepo.fetch { (users) in
-            XCTAssertEqual(users.count, 2)
-            expectedResult.fulfill()
-        }
-        waitForExpectations(timeout: 10, handler:nil)
-    }
-    
-    func testRealFetch() {
-        let expectedResult = expectation(description: "Async real request")
-        
-        usersRepo.fetch { (users) in
-            XCTAssertEqual(users.count, 30)
-            expectedResult.fulfill()
-        }
-        waitForExpectations(timeout: 10, handler:nil)
     }
 }
