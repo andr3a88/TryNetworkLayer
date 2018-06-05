@@ -18,13 +18,18 @@ class UserDetailViewModel {
     // MARK: Properties
     
     let usersRepo = UsersRepo()
-    fileprivate var user: GHUserDetail?
+    var user: GHUserDetail?
     
     // MARK: Methods
+
+    init(userLogin: String) {
+        self.fecthUser(userLogin: userLogin)
+    }
     
-    func fecthUser(login: String) {
-        usersRepo.fetchDetail(username: login) { [unowned self] (user) in
+    func fecthUser(userLogin: String) {
+        usersRepo.fetchDetail(username: userLogin) { [unowned self] (user) in
             if let user = user {
+                self.user = user
                 self.username.value = user.login!
             }
         }

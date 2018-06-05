@@ -7,7 +7,6 @@
 //
 
 import XCTest
-import ObjectMapper
 @testable import TryNetworkLayer
 
 class UsersTaskTests: XCTestCase {

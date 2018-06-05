@@ -60,7 +60,10 @@ class UsersViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "UserDetailViewController") as! UserDetailViewController
+        let user = viewModel.userAt(indexPath: indexPath)
+        vc.viewModel = UserDetailViewModel(userLogin: user.login!)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 

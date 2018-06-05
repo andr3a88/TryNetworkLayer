@@ -12,11 +12,12 @@ class UserDetailViewController: UIViewController {
 
     @IBOutlet weak var usernameLabel: UILabel!
     
-    let viewModel = UserDetailViewModel()
+    var viewModel: UserDetailViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.setupObservers()
     }
     
     func setupObservers() {

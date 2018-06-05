@@ -11,7 +11,7 @@ import Alamofire
 
 public class Response {
     
-    public typealias JSON = [String : Any]
+    public typealias JSON = [String: Any]
     
     var json: JSON?
     var data: Data?

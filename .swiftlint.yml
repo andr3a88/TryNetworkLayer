@@ -65,9 +65,9 @@ reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, junit, html, em
 custom_rules:
     comments_space: # From https://github.com/brandenr/swiftlintconfig
         name: "Space After Comment"
-        regex: "(^ *//\w+)"
+        regex: "(^ *//\\w+)"
         message: "There should be a space after //"
-        severity: error
+        severity: warning
 
     force_https: # From https://github.com/Twigz/Game
         name: "Force HTTPS over HTTP"
@@ -79,7 +79,7 @@ custom_rules:
     double_space: # From https://github.com/IBM-Swift/Package-Builder
         include: "*.swift"
         name: "Double space"
-        regex: "([a-z,A-Z] \s+)"
+        regex: "([a-z,A-Z] \\s+)"
         message: "Double space between keywords"
         match_kinds: keyword
         severity: warning

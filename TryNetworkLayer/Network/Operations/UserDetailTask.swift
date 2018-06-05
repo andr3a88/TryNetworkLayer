@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ObjectMapper
 
 class UserDetailTask: Operation {
     
@@ -28,14 +27,18 @@ class UserDetailTask: Operation {
     func execute(in dispatcher: Dispatcher, completion: @escaping (_ user: GHUserDetail?, _ error: Error?) -> Void) {
         do {
             try dispatcher.execute(request: self.request, completion: { (response: Response) in
-                
-                if let json = response.json, let object = Mapper<GHUserDetail>().map(JSON: json) {
-                    completion(object, nil)
+                if let json = response.json {
+                    do {
+                        let object = try JSONDecoder.decode(json, to: GHUserDetail.self)
+                        completion(object, nil)
+                    } catch let error {
+                        completion(nil, error)
+                    }
                 } else if let error = response.error {
                     completion(nil, error)
                 }
             })
-        } catch (let error) {
+        } catch let error {
             print("Network error \(error.localizedDescription)")
         }
     }

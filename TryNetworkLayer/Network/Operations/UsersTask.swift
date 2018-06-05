@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ObjectMapper
 
 class UsersTask: Operation {
     
@@ -29,13 +28,19 @@ class UsersTask: Operation {
         do {
             try dispatcher.execute(request: self.request, completion: { (response: Response) in
                 
-                if let json = response.json, let object = Mapper<GHSearchResponse>().map(JSON: json) {
-                    completion(object.items, nil)
+                if let json = response.json {
+                    do {
+                        let object = try JSONDecoder.decode(json, to: GHSearchResponse.self)
+                        completion(object.items, nil)
+                    } catch let error {
+                        completion(nil, error)
+                    }
+
                 } else if let error = response.error {
                     completion(nil, error)
                 }
             })
-        } catch (let error) {
+        } catch let error {
             print("Network error \(error.localizedDescription)")
         }
     }

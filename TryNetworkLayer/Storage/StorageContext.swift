@@ -32,7 +32,7 @@ protocol StorageContext {
     /// Update an object
     ///
     /// - Parameter block: The update block
-    func update(block: @escaping () -> ()) throws
+    func update(block: @escaping () -> Void) throws
     
     /// Delete an object
     ///
@@ -51,5 +51,5 @@ protocol StorageContext {
     ///   - predicate: An optional predicate
     ///   - sorted: An optional sorting key
     ///   - completion: The completion handler
-    func fetch<T: Storable>(_ model: T.Type, predicate: NSPredicate?, sorted: Sorted?, completion: (([T]) -> ()))
+    func fetch<T: Storable>(_ model: T.Type, predicate: NSPredicate?, sorted: Sorted?, completion: (([T]) -> Void))
 }

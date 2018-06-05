@@ -75,12 +75,14 @@ NSString *RLMRealmPathForFile(NSString *fileName) {
 }
 
 + (RLMRealmConfiguration *)rawDefaultConfiguration {
+    RLMRealmConfiguration *configuration;
     @synchronized(c_defaultRealmFileName) {
         if (!s_defaultConfiguration) {
             s_defaultConfiguration = [[RLMRealmConfiguration alloc] init];
         }
+        configuration = s_defaultConfiguration;
     }
-    return s_defaultConfiguration;
+    return configuration;
 }
 
 + (void)resetRealmConfigurationState {
@@ -283,8 +285,6 @@ static void RLMNSStringToStdString(std::string &out, NSString *in) {
     if (shouldCompactOnLaunch) {
         if (self.readOnly) {
             @throw RLMException(@"Cannot set `shouldCompactOnLaunch` when `readOnly` is set.");
-        } else if (_config.sync_config) {
-            @throw RLMException(@"Cannot set `shouldCompactOnLaunch` when `syncConfiguration` is set.");
         }
         _config.should_compact_on_launch_function = [=](size_t totalBytes, size_t usedBytes) {
             return shouldCompactOnLaunch(totalBytes, usedBytes);
@@ -294,6 +294,10 @@ static void RLMNSStringToStdString(std::string &out, NSString *in) {
         _config.should_compact_on_launch_function = nullptr;
     }
     _shouldCompactOnLaunch = shouldCompactOnLaunch;
+}
+
+- (void)setCustomSchemaWithoutCopying:(RLMSchema *)schema {
+    _customSchema = schema;
 }
 
 @end

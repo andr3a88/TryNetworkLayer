@@ -128,7 +128,7 @@ class RealmStorageContext: StorageContext {
         }
     }
     
-    func fetch<T: Storable>(_ model: T.Type, predicate: NSPredicate? = nil, sorted: Sorted? = nil, completion: (([T]) -> ())) {
+    func fetch<T: Storable>(_ model: T.Type, predicate: NSPredicate? = nil, sorted: Sorted? = nil, completion: (([T]) -> Void)) {
         var objects = self.realm?.objects(model as! Object.Type)
         
         if let predicate = predicate {

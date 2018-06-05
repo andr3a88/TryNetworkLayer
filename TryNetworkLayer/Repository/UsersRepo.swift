@@ -68,7 +68,7 @@ final class UsersRepo: UsersRepoProtocol {
     
     func create(user: GHUser) {
         do {
-            try self.storage?.create(object: user, completion: { (user) in
+            try self.storage?.create(object: user, completion: { _ in
             })
         } catch _ as NSError {
         }
@@ -76,7 +76,7 @@ final class UsersRepo: UsersRepoProtocol {
     
     func create(userDetail: GHUserDetail) {
         do {
-            try self.storage?.create(object: userDetail, completion: { (user) in
+            try self.storage?.create(object: userDetail, completion: { _ in
             })
         } catch _ as NSError {
         }

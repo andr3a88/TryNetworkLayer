@@ -17,30 +17,30 @@ public enum UserRequests: Request {
         switch self {
         case .detail(let username):
             return "users/\(username)"
-        case .searchUsers(_):
+        case .searchUsers:
             return "search/users"
         }
     }
     
     public var method: HTTPMethod {
         switch self {
-        case .detail(_):
+        case .detail:
             return .get
-        case .searchUsers(_):
+        case .searchUsers:
             return .get
         }
     }
     
     public var parameters: RequestParams? {
         switch self {
-        case .detail(_):
+        case .detail:
             return .url([:])
         case .searchUsers(let query):
-            return .url(["q" : query])
+            return .url(["q": query])
         }
     }
     
-    public var headers: [String : Any]? {
+    public var headers: [String: Any]? {
         switch self {
         default:
             return nil
@@ -49,9 +49,9 @@ public enum UserRequests: Request {
     
     public var dataType: DataType {
         switch self {
-        case .detail(_):
+        case .detail:
             return .JSON
-        case .searchUsers(_):
+        case .searchUsers:
             return .JSON
         }
     }
