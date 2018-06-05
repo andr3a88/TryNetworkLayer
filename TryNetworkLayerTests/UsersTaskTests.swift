@@ -25,7 +25,7 @@ class UsersTaskTests: XCTestCase {
     }
     
     func testSearchResponseMapper() {
-        let object = Mapper<GHSearchResponse>().map(JSON: MockSearchResponse().JSON())!
+        let object = try! JSONDecoder.decode(MockSearchResponse().JSON(), to: GHSearchResponse.self)
         
         XCTAssertNotNil(object)
         XCTAssertFalse(object.incompleteResults!)
@@ -35,7 +35,7 @@ class UsersTaskTests: XCTestCase {
     }
     
     func testUserMapper() {
-        let object = Mapper<GHUser>().map(JSON: MockGHUser(id: 1).JSON())!
+        let object = try! JSONDecoder.decode( MockGHUser(id: 1).JSON(), to: GHUser.self)
         
         XCTAssertNotNil(object)
         XCTAssertEqual(object.organizationsUrl!, "url")
@@ -140,8 +140,8 @@ class MockUserTask: TryNetworkLayer.Operation {
     }
     
     func execute(in dispatcher: Dispatcher, completion: @escaping (_ user: [GHUser]?, _ error: Error?) -> Void) {
-        let object1 = Mapper<GHUser>().map(JSON: MockGHUser(id: 1).JSON())!
-        let object2 = Mapper<GHUser>().map(JSON: MockGHUser(id: 2).JSON())!
+        let object1 = try! JSONDecoder.decode( MockGHUser(id: 1).JSON(), to: GHUser.self)
+        let object2 = try! JSONDecoder.decode( MockGHUser(id: 2).JSON(), to: GHUser.self)
         completion([object1, object2], nil)
     }
 }

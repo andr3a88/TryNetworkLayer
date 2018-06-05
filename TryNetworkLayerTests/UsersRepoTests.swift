@@ -36,7 +36,7 @@ class UsersRepoTests: XCTestCase {
 }
 
 class MockUsersRepo: UsersRepoProtocol {
-    
+
     let storage = try! RealmStorageContext(configuration: ConfigurationType.inMemory(identifier: "test"))
     let dispatcher = NetworkDispatcher(environment: Environment("Github", host: "mock"))
     
@@ -88,5 +88,13 @@ class MockUsersRepo: UsersRepoProtocol {
             try self.storage.delete(object: user)
         } catch _ as NSError {
         }
+    }
+
+    func fetchDetail(username: String, block: @escaping (GHUserDetail?) -> Void) {
+
+    }
+
+    func create(userDetail: GHUserDetail) {
+
     }
 }
