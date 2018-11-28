@@ -327,13 +327,13 @@
 					65BBB9461F4B3425001A378C = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = 82PA648THA;
-						LastSwiftMigration = 0930;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 					};
 					65BBB95A1F4B3425001A378C = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = A2VGE7F94S;
-						LastSwiftMigration = 0930;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 65BBB9461F4B3425001A378C;
 					};
@@ -653,7 +653,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.as.TryNetworkLayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -668,7 +668,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.as.TryNetworkLayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -683,8 +683,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.as.TryNetworkLayerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TryNetworkLayer.app/TryNetworkLayer";
 			};
 			name = Debug;
@@ -700,8 +699,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.as.TryNetworkLayerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TryNetworkLayer.app/TryNetworkLayer";
 			};
 			name = Release;
