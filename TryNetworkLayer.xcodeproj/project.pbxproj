@@ -143,6 +143,23 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		65262AE121AED069005AE7C9 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				65BBB95F1F4B3425001A378C /* UsersTaskTests.swift */,
+				65197A651F5CB131007C8C64 /* UserDetailTaskTests.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		65262AE221AED089005AE7C9 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				65197A5B1F5AB4BB007C8C64 /* UsersRepoTests.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
 		65BBB93E1F4B3425001A378C = {
 			isa = PBXGroup;
 			children = (
@@ -186,9 +203,8 @@
 		65BBB95E1F4B3425001A378C /* TryNetworkLayerTests */ = {
 			isa = PBXGroup;
 			children = (
-				65197A5B1F5AB4BB007C8C64 /* UsersRepoTests.swift */,
-				65BBB95F1F4B3425001A378C /* UsersTaskTests.swift */,
-				65197A651F5CB131007C8C64 /* UserDetailTaskTests.swift */,
+				65262AE221AED089005AE7C9 /* Repository */,
+				65262AE121AED069005AE7C9 /* Network */,
 				65BBB9611F4B3425001A378C /* Info.plist */,
 			);
 			path = TryNetworkLayerTests;

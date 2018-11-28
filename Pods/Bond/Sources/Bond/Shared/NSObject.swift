@@ -83,7 +83,7 @@ extension NSObject {
             let superImplementation = class_getMethodImplementation(class_getSuperclass(self), selector)
             if let imp = originalImplementation ?? superImplementation {
                 typealias _IMP = @convention(c) (UnsafeRawPointer, Selector) -> Void
-                unsafeBitCast(imp, to: _IMP.self)(me, selector!)
+                unsafeBitCast(imp, to: _IMP.self)(me, selector)
             }
         }
         
