@@ -27,14 +27,10 @@
 import UIKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: UITextView {
+extension ReactiveExtensions where Base: UITextView {
 
     public var text: DynamicSubject<String?> {
-        #if swift(>=4.2)
         let notificationName = UITextView.textDidChangeNotification
-        #else
-        let notificationName = NSNotification.Name.UITextViewTextDidChange
-        #endif
         return dynamicSubject(
             signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),
             get: { $0.text },
@@ -43,11 +39,7 @@ public extension ReactiveExtensions where Base: UITextView {
     }
 
     public var attributedText: DynamicSubject<NSAttributedString?> {
-        #if swift(>=4.2)
         let notificationName = UITextView.textDidChangeNotification
-        #else
-        let notificationName = NSNotification.Name.UITextViewTextDidChange
-        #endif
         return dynamicSubject(
             signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),
             get: { $0.attributedText },
@@ -62,7 +54,7 @@ public extension ReactiveExtensions where Base: UITextView {
 
 extension UITextView: BindableProtocol {
 
-    public func bind(signal: Signal<String?, NoError>) -> Disposable {
+    public func bind(signal: Signal<String?, Never>) -> Disposable {
         return reactive.text.bind(signal: signal)
     }
 }

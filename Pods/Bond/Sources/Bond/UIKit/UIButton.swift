@@ -27,7 +27,7 @@
 import UIKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: UIButton {
+extension ReactiveExtensions where Base: UIButton {
 
     public var title: Bond<String?> {
         return bond { $0.setTitle($1, for: .normal) }
@@ -45,16 +45,11 @@ public extension ReactiveExtensions where Base: UIButton {
         return bond { $0.isHighlighted = $1 }
     }
 
-    @available(*, deprecated, renamed: "backgroundImage")
-    public var backgroungImage: Bond<UIImage> {
-        return backgroundImage
-    }
-
-    public var backgroundImage: Bond<UIImage> {
+    public var backgroundImage: Bond<UIImage?> {
         return bond { $0.setBackgroundImage($1, for: .normal) }
     }
 
-    public var image: Bond<UIImage> {
+    public var image: Bond<UIImage?> {
         return bond { $0.setImage($1, for: .normal) }
     }
 }
