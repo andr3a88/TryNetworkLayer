@@ -62,26 +62,17 @@ extension ReactiveExtensions where Base: NSObject {
             let options: NSKeyValueObservingOptions = startWithCurrentValue ? [.initial] : []
 
             let subscription = base.observe(keyPath, options: options) { base, change in
-                observer.next(base[keyPath: keyPath])
+                observer.receive(base[keyPath: keyPath])
             }
 
             let disposable = base._willDeallocate.observeCompleted {
-                if #available(iOS 11, *) {} else {
-                    let keyPathString = NSExpression(forKeyPath: keyPath).keyPath
-                    base.removeObserver(base, forKeyPath: keyPathString)
-                }
-                
                 subscription.invalidate()
+                observer.receive(completion: .finished)
             }
 
-            return DeinitDisposable(disposable: BlockDisposable {
-                if #available(iOS 11, *) {} else {
-                    let keyPathString = NSExpression(forKeyPath: keyPath).keyPath
-                    base.removeObserver(base, forKeyPath: keyPathString)
-                }
-                
-                subscription.invalidate()
-                disposable.dispose()
+            return DeinitDisposable(disposable: MainBlockDisposable {
+                  subscription.invalidate()
+                  disposable.dispose()
             })
         }
     }
@@ -287,7 +278,7 @@ private class RKKeyValueSignal: NSObject, SignalProtocol {
 
     fileprivate init(keyPath: String, for object: NSObject) {
         self.keyPath = keyPath
-        self.subject = PublishSubject()
+        self.subject = PassthroughSubject()
         self.object = object
         super.init()
 
@@ -302,13 +293,13 @@ private class RKKeyValueSignal: NSObject, SignalProtocol {
 
     deinit {
         deallocationDisposable.dispose()
-        subject.completed()
+        subject.send(completion: .finished)
     }
 
     fileprivate override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if context == &self.context {
             if let _ = change?[NSKeyValueChangeKey.newKey] {
-                subject.next(())
+                subject.send(())
             }
         } else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
@@ -333,7 +324,7 @@ private class RKKeyValueSignal: NSObject, SignalProtocol {
         }
     }
 
-    fileprivate func observe(with observer: @escaping (Event<Void, Never>) -> Void) -> Disposable {
+    fileprivate func observe(with observer: @escaping (Signal<Void, Never>.Event) -> Void) -> Disposable {
         increaseNumberOfObservers()
         let disposable = subject.observe(with: observer)
         let cleanupDisposabe = BlockDisposable {

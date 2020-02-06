@@ -322,7 +322,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 1020;
-				ORGANIZATIONNAME = "Ennova Research Srl";
+				ORGANIZATIONNAME = "Andrea Stevanato";
 				TargetAttributes = {
 					65BBB9461F4B3425001A378C = {
 						CreatedOnToolsVersion = 8.3.3;

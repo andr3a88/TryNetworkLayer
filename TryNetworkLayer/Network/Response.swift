@@ -2,8 +2,8 @@
 //  Response.swift
 //  TryNetworkLayer
 //
-//  Created by Andrea on 21/08/2017.
-//  Copyright © 2017 Ennova Research Srl. All rights reserved.
+//  Created by Andrea on 30/12/2019.
+//  Copyright © 2019 Andrea Stevanato All rights reserved.
 //
 
 import Foundation

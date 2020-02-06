@@ -33,16 +33,16 @@ extension ReactiveExtensions where Base: UIControl {
         let base = self.base
         return Signal { [weak base] observer in
             guard let base = base else {
-                observer.completed()
+                observer.receive(completion: .finished)
                 return NonDisposable.instance
             }
             let target = BNDControlTarget(control: base, events: events) {
-                observer.next(())
+                observer.receive(())
             }
-            return BlockDisposable {
+            return MainBlockDisposable {
                 target.unregister()
             }
-        }.take(until: base.deallocated)
+        }.prefix(untilOutputFrom: base.deallocated)
     }
 
     public var isEnabled: Bond<Bool> {

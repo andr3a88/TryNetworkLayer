@@ -34,11 +34,11 @@ extension SignalProtocol {
             return self.observe { event in
                 switch event {
                 case .next(let element):
-                    observer.next(transform(element))
+                    observer.receive(transform(element))
                 case .failed(let error):
-                    observer.failed(error)
+                    observer.receive(completion: .failure(error))
                 case .completed:
-                    observer.completed()
+                    observer.receive(completion: .finished)
                 }
             }
         }
@@ -86,9 +86,9 @@ extension SignalProtocol {
             serialDisposable.otherDisposable = self.observe { taskEvent in
                 switch taskEvent {
                 case .next(let value):
-                    observer.next(value)
+                    observer.receive(value)
                 case .completed:
-                    observer.completed()
+                    observer.receive(completion: .finished)
                 case .failed(let error):
                     serialDisposable.otherDisposable = recover(error).observe(with: observer.on)
                 }
@@ -110,14 +110,14 @@ extension SignalProtocol where Error == Swift.Error {
                 switch event {
                 case .next(let element):
                     do {
-                        observer.next(try transform(element))
+                        observer.receive(try transform(element))
                     } catch {
-                        observer.failed(error)
+                        observer.receive(completion: .failure(error))
                     }
                 case .failed(let error):
-                    observer.failed(error)
+                    observer.receive(completion: .failure(error))
                 case .completed:
-                    observer.completed()
+                    observer.receive(completion: .finished)
                 }
             }
         }
@@ -161,37 +161,36 @@ extension SignalProtocol where Element: SignalProtocol, Element.Error == Error {
     /// Flatten the signal by observing all inner signals and propagating elements from each one as they arrive.
     public func merge() -> Signal<InnerElement, Error> {
         return Signal { observer in
-            let lock = NSRecursiveLock(name: "reactive_kit.merge")
+            let lock = NSRecursiveLock(name: "com.reactive_kit.signal.merge")
             let compositeDisposable = CompositeDisposable()
-            var numberOfOperations = 1 // 1 for outer signal
-            func decrementNumberOfOperations() {
-                numberOfOperations -= 1
-                if numberOfOperations == 0 {
-                    observer.completed()
+            var _numberOfOperations = 1 // 1 for outer signal
+            func _decrementNumberOfOperations() {
+                _numberOfOperations -= 1
+                if _numberOfOperations == 0 {
+                    observer.receive(completion: .finished)
                 }
             }
             compositeDisposable += self.observe { outerEvent in
                 switch outerEvent {
                 case .next(let innerSignal):
-                    lock.lock()
-                    numberOfOperations += 1
+                    lock.lock(); defer { lock.unlock() }
+                    _numberOfOperations += 1
                     compositeDisposable += innerSignal.observe { innerEvent in
                         switch innerEvent {
                         case .next(let element):
-                            observer.next(element)
+                            observer.receive(element)
                         case .failed(let error):
-                            observer.failed(error)
+                            observer.receive(completion: .failure(error))
                         case .completed:
-                            decrementNumberOfOperations()
+                            lock.lock(); defer { lock.unlock() }
+                            _decrementNumberOfOperations()
                         }
                     }
-                    lock.unlock()
                 case .failed(let error):
-                    observer.failed(error)
+                    observer.receive(completion: .failure(error))
                 case .completed:
-                    lock.lock()
-                    decrementNumberOfOperations()
-                    lock.unlock()
+                    lock.lock(); defer { lock.unlock() }
+                    _decrementNumberOfOperations()
                 }
             }
             return compositeDisposable
@@ -201,41 +200,38 @@ extension SignalProtocol where Element: SignalProtocol, Element.Error == Error {
     /// Flatten the signal by observing and propagating emissions only from latest signal.
     public func switchToLatest() -> Signal<InnerElement, Error> {
         return Signal { observer in
+            let lock = NSRecursiveLock(name: "com.reactive_kit.signal.switch_to_latest")
             let serialDisposable = SerialDisposable(otherDisposable: nil)
             let compositeDisposable = CompositeDisposable([serialDisposable])
-            var completions = (outer: false, inner: false)
-            let lock = NSRecursiveLock(name: "reactive_kit.switch_to_latest")
+            var _completions = (outer: false, inner: false)
             compositeDisposable += self.observe { outerEvent in
                 switch outerEvent {
                 case .next(let innerSignal):
-                    lock.lock()
-                    completions.inner = false
+                    lock.lock(); defer { lock.unlock() }
+                    _completions.inner = false
                     serialDisposable.otherDisposable?.dispose()
                     serialDisposable.otherDisposable = innerSignal.observe { innerEvent in
                         switch innerEvent {
                         case .next(let element):
-                            observer.next(element)
+                            observer.receive(element)
                         case .failed(let error):
-                            observer.failed(error)
+                            observer.receive(completion: .failure(error))
                         case .completed:
-                            lock.lock()
-                            completions.inner = true
-                            if completions.outer {
-                                observer.completed()
+                            lock.lock(); defer { lock.unlock() }
+                            _completions.inner = true
+                            if _completions.outer {
+                                observer.receive(completion: .finished)
                             }
-                            lock.unlock()
                         }
                     }
-                    lock.unlock()
                 case .failed(let error):
-                    observer.failed(error)
+                    observer.receive(completion: .failure(error))
                 case .completed:
-                    lock.lock()
-                    completions.outer = true
-                    if completions.inner {
-                        observer.completed()
+                    lock.lock(); defer { lock.unlock() }
+                    _completions.outer = true
+                    if _completions.inner {
+                        observer.receive(completion: .finished)
                     }
-                    lock.unlock()
                 }
             }
 
@@ -247,54 +243,47 @@ extension SignalProtocol where Element: SignalProtocol, Element.Error == Error {
     /// arrive, starting next observation only after previous one completes.
     public func concat() -> Signal<InnerElement, Error> {
         return Signal { observer in
-            let lock = NSRecursiveLock(name: "reactive_kit.concat")
+            let lock = NSRecursiveLock(name: "com.reactive_kit.signal.concat")
             let serialDisposable = SerialDisposable(otherDisposable: nil)
             let compositeDisposable = CompositeDisposable([serialDisposable])
-            var completions = (outer: false, inner: true)
-            var innerSignalQueue: [Element] = []
-            func startNextOperation() {
-                completions.inner = false
-                let innerSignal = innerSignalQueue.removeFirst()
+            var _completions = (outer: false, inner: true)
+            var _innerSignalQueue: [Element] = []
+            func _startNextOperation() {
+                _completions.inner = false
+                let innerSignal = _innerSignalQueue.removeFirst()
                 serialDisposable.otherDisposable?.dispose()
                 serialDisposable.otherDisposable = innerSignal.observe { event in
+                    lock.lock(); defer { lock.unlock() }
                     switch event {
                     case .next(let element):
-                        observer.next(element)
+                        observer.receive(element)
                     case .failed(let error):
-                        observer.failed(error)
+                        observer.receive(completion: .failure(error))
                     case .completed:
-                        lock.lock()
-                        completions.inner = true
-                        if !innerSignalQueue.isEmpty {
-                            startNextOperation()
-                        } else if completions.outer {
-                            observer.completed()
+                        _completions.inner = true
+                        if !_innerSignalQueue.isEmpty {
+                            _startNextOperation()
+                        } else if _completions.outer {
+                            observer.receive(completion: .finished)
                         }
-                        lock.unlock()
                     }
                 }
-            }
-            func addToQueue(signal: Element) {
-                lock.lock()
-                innerSignalQueue.append(signal)
-                if completions.inner {
-                    startNextOperation()
-                }
-                lock.unlock()
             }
             compositeDisposable += self.observe { outerEvent in
+                lock.lock(); defer { lock.unlock() }
                 switch outerEvent {
                 case .next(let innerSignal):
-                    addToQueue(signal: innerSignal)
-                case .failed(let error):
-                    observer.failed(error)
-                case .completed:
-                    lock.lock()
-                    completions.outer = true
-                    if completions.inner {
-                        observer.completed()
+                    _innerSignalQueue.append(innerSignal)
+                    if _completions.inner {
+                        _startNextOperation()
                     }
-                    lock.unlock()
+                case .failed(let error):
+                    observer.receive(completion: .failure(error))
+                case .completed:
+                    _completions.outer = true
+                    if _completions.inner {
+                        observer.receive(completion: .finished)
+                    }
                 }
             }
             return compositeDisposable

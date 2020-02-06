@@ -3,7 +3,7 @@
 //  TryNetworkLayer
 //
 //  Created by Andrea Stevanato on 05/06/2018.
-//  Copyright © 2018 Ennova Research Srl. All rights reserved.
+//  Copyright © 2018 Andrea Stevanato All rights reserved.
 //
 
 import Foundation

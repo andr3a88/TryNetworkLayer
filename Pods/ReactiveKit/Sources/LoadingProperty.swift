@@ -22,25 +22,35 @@
 //  THE SOFTWARE.
 //
 
+import Foundation
+
 /// A property that lazily loads its value using the given signal producer closure.
 /// The value will be loaded when the property is observed for the first time.
 public class LoadingProperty<LoadingValue, LoadingError: Swift.Error>: PropertyProtocol, SignalProtocol, DisposeBagProvider {
     
+    private let lock = NSRecursiveLock(name: "com.reactive_kit.loading_property")
+    
     private let signalProducer: () -> LoadingSignal<LoadingValue, LoadingError>
-    private let subject = PublishSubject<LoadingState<LoadingValue, LoadingError>, Never>()
-    private var loadingDisposable: Disposable? = nil
+    private let subject = PassthroughSubject<LoadingState<LoadingValue, LoadingError>, Never>()
+
+    private var _loadingDisposable: Disposable?
     
     public var bag: DisposeBag {
         return subject.disposeBag
     }
     
+    private var _loadingState: LoadingState<LoadingValue, LoadingError> = .loading {
+        didSet {
+            subject.send(_loadingState)
+        }
+    }
+    
     /// Current state of the property. In `.loading` state until the value is loaded.
     /// When the property is observed for the first time, the value will be loaded and
     /// the state will be updated to either `.loaded` or `.failed` state.
-    public private(set) var loadingState: LoadingState<LoadingValue, LoadingError> = .loading {
-        didSet {
-            subject.next(loadingState)
-        }
+    public var loadingState: LoadingState<LoadingValue, LoadingError> {
+        lock.lock(); defer { lock.unlock() }
+        return _loadingState
     }
     
     /// Underlying value. `nil` if not yet loaded or if the property is in error state.
@@ -49,7 +59,8 @@ public class LoadingProperty<LoadingValue, LoadingError: Swift.Error>: PropertyP
             return loadingState.value
         }
         set {
-            loadingState = value.flatMap { .loaded($0) } ?? .loading
+            lock.lock(); defer { lock.unlock() }
+            _loadingState = newValue.flatMap { .loaded($0) } ?? .loading
         }
     }
     
@@ -67,11 +78,12 @@ public class LoadingProperty<LoadingValue, LoadingError: Swift.Error>: PropertyP
     
     private func load(silently: Bool) -> LoadingSignal<LoadingValue, LoadingError> {
         return LoadingSignal { observer in
+            self.lock.lock(); defer { self.lock.unlock() }
             if !silently {
-                self.loadingState = .loading
+                self._loadingState = .loading
             }
-            observer.next(.loading)
-            self.loadingDisposable = self.signalProducer().observe { event in
+            observer.receive(.loading)
+            self._loadingDisposable = self.signalProducer().observe { event in
                 switch event {
                 case .next(let anyLoadingState):
                     let loadingSate = anyLoadingState.asLoadingState
@@ -79,34 +91,40 @@ public class LoadingProperty<LoadingValue, LoadingError: Swift.Error>: PropertyP
                     case .loading:
                         break
                     case .loaded:
-                        self.loadingState = loadingSate
+                        self.lock.lock(); defer { self.lock.unlock() }
+                        self._loadingState = loadingSate
                     case .failed:
                         if !silently {
-                            self.loadingState = loadingSate
+                            self.lock.lock(); defer { self.lock.unlock() }
+                            self._loadingState = loadingSate
                         }
                     }
-                    observer.next(loadingSate)
+                    observer.receive(loadingSate)
                 case .completed:
-                    observer.completed()
+                    observer.receive(completion: .finished)
                 case .failed:
                     break // Never
                 }
             }
             
             return BlockDisposable {
-                self.loadingDisposable?.dispose()
-                self.loadingDisposable = nil
+                self.lock.lock(); defer { self.lock.unlock() }
+                self._loadingDisposable?.dispose()
+                self._loadingDisposable = nil
             }
         }
     }
     
-    public func observe(with observer: @escaping (Event<LoadingState<LoadingValue, LoadingError>, Never>) -> Void) -> Disposable {
-        if case .loading = loadingState, loadingDisposable == nil {
-            loadingDisposable = load(silently: false).observeCompleted { [weak self] in
-                self?.loadingDisposable = nil
+    public func observe(with observer: @escaping (Signal<LoadingState<LoadingValue, LoadingError>, Never>.Event) -> Void) -> Disposable {
+        lock.lock(); defer { lock.unlock() }
+        if case .loading = _loadingState, _loadingDisposable == nil {
+            _loadingDisposable = load(silently: false).observeCompleted { [weak self] in
+                guard let self = self else { return }
+                self.lock.lock(); defer { self.lock.unlock() }
+                self._loadingDisposable = nil
             }
         }
-        return subject.start(with: loadingState).observe(with: observer)
+        return subject.prepend(_loadingState).observe(with: observer)
     }
 }
 

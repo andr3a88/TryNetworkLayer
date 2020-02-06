@@ -22,6 +22,8 @@
 //  THE SOFTWARE.
 //
 
+import Foundation
+
 /// Represents loading state of a value. Element of LoadingSignal.
 public protocol LoadingStateProtocol {
     
@@ -219,14 +221,14 @@ extension SignalProtocol where Element: LoadingStateProtocol, Error == Never {
                 case .next(let anyLoadingState):
                     switch anyLoadingState.asLoadingState {
                     case .loaded(let value):
-                        observer.next(value)
+                        observer.receive(value)
                     case .failed(let error):
-                        observer.failed(error)
+                        observer.receive(completion: .failure(error))
                     case .loading:
                         break
                     }
                 case .completed:
-                    observer.completed()
+                    observer.receive(completion: .finished)
                 case .failed:
                     break // Never
                 }
@@ -254,21 +256,21 @@ extension SignalProtocol where Element: LoadingStateProtocol, Error == Never {
     ///
     public func liftValue<T>(_ transfrom: @escaping (Signal<LoadingValue, LoadingError>) -> LoadingSignal<T, LoadingError>) -> LoadingSignal<T, LoadingError> {
         return Signal { observer in
-            let subject = PublishSubject<LoadingValue, LoadingError>()
+            let subject = PassthroughSubject<LoadingValue, LoadingError>()
             let d1 = transfrom(subject.toSignal()).observe(with: observer.on)
             let d2 = self.observe { event in
                 switch event {
                 case .next(let anyLoadingState):
                     switch anyLoadingState.asLoadingState {
                     case .loaded(let value):
-                        subject.next(value)
+                        subject.receive(value)
                     case .failed(let error):
-                        observer.next(.failed(error))
+                        observer.receive(.failed(error))
                     case .loading:
-                        observer.next(.loading)
+                        observer.receive(.loading)
                     }
                 case .completed:
-                    subject.completed()
+                    subject.send(completion: .finished)
                 case .failed:
                     break // Never
                 }
@@ -306,31 +308,33 @@ extension SignalProtocol where Element: LoadingStateProtocol, Error == Never {
     /// - parameter loadsAgainOnFailure: `.loading` state that follows a `.failed` state will be kept as `.loading` if `true` is passed. Otherwise it will be mapped into `.reloading`. Default is true.
     ///
     public func deriveObservedLoadingState(loadsAgainOnFailure: Bool = true) -> Signal<ObservedLoadingState<LoadingValue, LoadingError>, Never> {
-        var previousLoadingState: LoadingState<LoadingValue, LoadingError>? = nil
-        var hasProducedNonLoadingState = false
+        let lock = NSRecursiveLock(name: "com.reactive_kit.loading_signal.derive_observe_loading_state")
+        var _previousLoadingState: LoadingState<LoadingValue, LoadingError>? = nil
+        var _hasProducedNonLoadingState = false
         return Signal { observer in
             return self.observe { event in
                 switch event {
                 case .next(let anyLoadingState):
+                    lock.lock(); defer { lock.unlock() }
                     let loadingState = anyLoadingState.asLoadingState
                     switch loadingState {
                     case .loading:
-                        guard !(previousLoadingState?.isSameStateAs(loadingState) ?? false) else { break }
-                        if hasProducedNonLoadingState {
-                            observer.next(.reloading)
+                        guard !(_previousLoadingState?.isSameStateAs(loadingState) ?? false) else { break }
+                        if _hasProducedNonLoadingState {
+                            observer.receive(.reloading)
                         } else {
-                            observer.next(.loading)
+                            observer.receive(.loading)
                         }
                     case .loaded(let value):
-                        hasProducedNonLoadingState = true
-                        observer.next(.loaded(value))
+                        _hasProducedNonLoadingState = true
+                        observer.receive(.loaded(value))
                     case .failed(let error):
-                        hasProducedNonLoadingState = !loadsAgainOnFailure
-                        observer.next(.failed(error))
+                        _hasProducedNonLoadingState = !loadsAgainOnFailure
+                        observer.receive(.failed(error))
                     }
-                    previousLoadingState = loadingState
+                    _previousLoadingState = loadingState
                 case .completed:
-                    observer.completed()
+                    observer.receive(completion: .finished)
                 case .failed:
                     break // Never
                 }
@@ -344,7 +348,7 @@ extension SignalProtocol {
     /// Convert signal into a loading signal. The signal will automatically start with `.loading` state, each element will
     /// be mapped into a `.loaded` state and the error will be mapped into a `.failed` state.
     public func toLoadingSignal() -> LoadingSignal<Element, Error> {
-        return map { LoadingState.loaded($0) }.flatMapError { LoadingSignal.failed($0) }.start(with: .loading)
+        return map { LoadingState.loaded($0) }.flatMapError { LoadingSignal.failed($0) }.prepend(.loading)
     }
 }
 
@@ -374,7 +378,7 @@ extension SignalProtocol where Element: ObservedLoadingStateProtocol, Error == N
     /// Update loading state of the listener on each `.next` (loading state) event.
     public func updateLoadingState(of listener: LoadingStateListener, context: ExecutionContext) -> Signal<ObservedLoadingState<LoadingValue, LoadingError>, Never> {
         
-        let _observe = { (listener: LoadingStateListener?, event: Event<Element, Error>, observer: AtomicObserver<ObservedLoadingState<LoadingValue, LoadingError>, Never>) in
+        let _observe = { (listener: LoadingStateListener?, event: Signal<Element, Error>.Event, observer: AtomicObserver<ObservedLoadingState<LoadingValue, LoadingError>, Never>) in
             switch event {
             case .next(let anyObservedLoadingState):
                 let observedLoadingState = anyObservedLoadingState.asObservedLoadingState
@@ -383,9 +387,9 @@ extension SignalProtocol where Element: ObservedLoadingStateProtocol, Error == N
                         listener.setLoadingState(observedLoadingState)
                     }
                 }
-                observer.next(observedLoadingState)
+                observer.receive(observedLoadingState)
             case .completed:
-                observer.completed()
+                observer.receive(completion: .finished)
             }
         }
         

@@ -32,16 +32,17 @@ public protocol PropertyProtocol {
 
 /// Represents mutable state that can be observed as a signal of events.
 public final class Property<Value>: PropertyProtocol, SubjectProtocol, BindableProtocol, DisposeBagProvider {
-    
-    private var _value: Value
-    private let subject = PublishSubject<Value, Never>()
-    private let lock = NSRecursiveLock(name: "reactive_kit.property")
+
+    private let lock = NSRecursiveLock(name: "com.reactive_kit.property")
+
+    private let subject: Subject<Value, Never>
 
     public var bag: DisposeBag {
         return subject.disposeBag
     }
     
     /// Underlying value. Changing it emits `.next` event with new value.
+    private var _value: Value
     public var value: Value {
         get {
             lock.lock(); defer { lock.unlock() }
@@ -50,23 +51,26 @@ public final class Property<Value>: PropertyProtocol, SubjectProtocol, BindableP
         set {
             lock.lock(); defer { lock.unlock() }
             _value = newValue
-            subject.next(newValue)
+            subject.send(newValue)
         }
     }
     
-    public init(_ value: Value) {
+    public init(_ value: Value, subject: Subject<Value, Never> = PassthroughSubject()) {
         _value = value
+        self.subject = subject
     }
     
-    public func on(_ event: Event<Value, Never>) {
+    public func on(_ event: Signal<Value, Never>.Event) {
+        lock.lock(); defer { lock.unlock() }
         if case .next(let element) = event {
             _value = element
         }
         subject.on(event)
     }
     
-    public func observe(with observer: @escaping (Event<Value, Never>) -> Void) -> Disposable {
-        return subject.start(with: value).observe(with: observer)
+    public func observe(with observer: @escaping (Signal<Value, Never>.Event) -> Void) -> Disposable {
+        lock.lock(); defer { lock.unlock() }
+        return subject.prepend(_value).observe(with: observer)
     }
     
     public var readOnlyView: AnyProperty<Value> {
@@ -75,21 +79,21 @@ public final class Property<Value>: PropertyProtocol, SubjectProtocol, BindableP
     
     /// Change the underlying value without notifying the observers.
     public func silentUpdate(value: Value) {
+        lock.lock(); defer { lock.unlock() }
         _value = value
     }
     
     public func bind(signal: Signal<Value, Never>) -> Disposable {
         return signal
-            .take(until: bag.deallocated)
-            .observeIn(.nonRecursive())
+            .prefix(untilOutputFrom: bag.deallocated)
+            .receive(on: ExecutionContext.nonRecursive())
             .observeNext { [weak self] element in
-                guard let s = self else { return }
-                s.on(.next(element))
-        }
+                self?.on(.next(element))
+            }
     }
     
     deinit {
-        subject.completed()
+        subject.send(completion: .finished)
     }
 }
 
@@ -106,7 +110,7 @@ public final class AnyProperty<Value>: PropertyProtocol, SignalProtocol {
         self.property = property
     }
     
-    public func observe(with observer: @escaping (Event<Value, Never>) -> Void) -> Disposable {
+    public func observe(with observer: @escaping (Signal<Value, Never>.Event) -> Void) -> Disposable {
         return property.observe(with: observer)
     }
 }

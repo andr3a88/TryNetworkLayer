@@ -54,12 +54,4 @@ public final class GHUser: Object, Codable {
     required public init() {
         super.init()
     }
-    
-    required public init(realm: RLMRealm, schema: RLMObjectSchema) {
-        super.init(realm: realm, schema: schema)
-    }
-    
-    required public init(value: Any, schema: RLMSchema) {
-        fatalError("init(value:schema:) has not been implemented")
-    }
 }

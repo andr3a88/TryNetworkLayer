@@ -49,16 +49,16 @@ extension ReactiveExtensions where Base: UIView {
         let base = self.base
         return Signal { [weak base] observer in
             guard let base = base else {
-                observer.completed()
+                observer.receive(completion: .finished)
                 return NonDisposable.instance
             }
             let target = BNDGestureTarget(view: base, gestureRecognizer: gestureRecognizer) { recog in
-                observer.next(recog as! T)
+                observer.receive(recog as! T)
             }
-            return BlockDisposable {
+            return MainBlockDisposable {
                 target.unregister()
             }
-            }.take(until: base.deallocated)
+        }.prefix(untilOutputFrom: base.deallocated)
     }
 
     public func tapGesture(numberOfTaps: Int = 1, numberOfTouches: Int = 1) -> SafeSignal<UITapGestureRecognizer> {

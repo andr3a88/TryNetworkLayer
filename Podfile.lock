@@ -1,15 +1,15 @@
 PODS:
-  - Alamofire (4.8.2)
-  - Bond (7.4.1):
-    - Differ (~> 1.3)
-    - ReactiveKit (~> 3.10)
-  - Differ (1.4.1)
-  - ReactiveKit (3.10.0)
-  - Realm (3.14.1):
-    - Realm/Headers (= 3.14.1)
-  - Realm/Headers (3.14.1)
-  - RealmSwift (3.14.1):
-    - Realm (= 3.14.1)
+  - Alamofire (4.9.1)
+  - Bond (7.6.6):
+    - Differ (~> 1.4)
+    - ReactiveKit (~> 3.14)
+  - Differ (1.4.4)
+  - ReactiveKit (3.16.1)
+  - Realm (4.3.1):
+    - Realm/Headers (= 4.3.1)
+  - Realm/Headers (4.3.1)
+  - RealmSwift (4.3.1):
+    - Realm (= 4.3.1)
 
 DEPENDENCIES:
   - Alamofire
@@ -18,7 +18,7 @@ DEPENDENCIES:
   - RealmSwift
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - Alamofire
     - Bond
     - Differ
@@ -27,13 +27,13 @@ SPEC REPOS:
     - RealmSwift
 
 SPEC CHECKSUMS:
-  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
-  Bond: 6e73608fdd9d44e84f52f9bf9d56098ad80cbbb1
-  Differ: ca4350872e32a1aeedf3d9e2d9e47127833bfa9c
-  ReactiveKit: af0d53664c2326a03d2c9f92c92a30bbc7f3a9ee
-  Realm: e12c9c2387d05c5bba3a9c394838f5870e85763b
-  RealmSwift: a82eab9b04c3e1616082c7e17aa300740847769c
+  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  Bond: 9e7d901cf4ed825b6004a93dd0a7f1c7479e2834
+  Differ: 5cd747e2f29c11ea9605eba7cb369df17e2b1ee2
+  ReactiveKit: e75c4c10c2b2b6469bf7c8c177675f3ee8baa949
+  Realm: 31dc40934081ef740f60feedc46d88473cbfeb40
+  RealmSwift: b5199e9a41f67b99f51acf6874a6166f5fbe93d1
 
-PODFILE CHECKSUM: 41b75e5b9ccd4d609eeb99d279794f3eeb4090fd
+PODFILE CHECKSUM: 9e86e932d89dfdcb6d711710b53038df05de3bb5
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.8.4

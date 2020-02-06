@@ -253,15 +253,17 @@ public extension UICollectionView {
     ///   - oldData:            Data which reflects the previous state of `UICollectionView`
     ///   - newData:            Data which reflects the current state of `UICollectionView`
     ///   - indexPathTransform: Closure which transforms zero-based `IndexPath` to desired  `IndexPath`
+    ///   - updateData:         Closure to be called immediately before performing updates, giving you a chance to correctly update data source
     ///   - completion:         Closure to be executed when the animation completes
     func animateItemChanges<T: Collection>(
         oldData: T,
         newData: T,
         indexPathTransform: @escaping (IndexPath) -> IndexPath = { $0 },
+        updateData: () -> Void,
         completion: ((Bool) -> Void)? = nil
     ) where T.Element: Equatable {
         let diff = oldData.extendedDiff(newData)
-        apply(diff, completion: completion, indexPathTransform: indexPathTransform)
+        apply(diff, updateData: updateData, completion: completion, indexPathTransform: indexPathTransform)
     }
 
     /// Animates items which changed between oldData and newData.
@@ -271,24 +273,28 @@ public extension UICollectionView {
     ///   - newData:            Data which reflects the current state of `UICollectionView`
     ///   - isEqual:            A function comparing two elements of `T`
     ///   - indexPathTransform: Closure which transforms zero-based `IndexPath` to desired  `IndexPath`
+    ///   - updateData:         Closure to be called immediately before performing updates, giving you a chance to correctly update data source
     ///   - completion:         Closure to be executed when the animation completes
     func animateItemChanges<T: Collection>(
         oldData: T,
         newData: T,
         isEqual: EqualityChecker<T>,
         indexPathTransform: @escaping (IndexPath) -> IndexPath = { $0 },
+        updateData: () -> Void,
         completion: ((Bool) -> Swift.Void)? = nil
     ) {
         let diff = oldData.extendedDiff(newData, isEqual: isEqual)
-        apply(diff, completion: completion, indexPathTransform: indexPathTransform)
+        apply(diff, updateData: updateData, completion: completion, indexPathTransform: indexPathTransform)
     }
 
     func apply(
         _ diff: ExtendedDiff,
+        updateData: () -> Void,
         completion: ((Bool) -> Swift.Void)? = nil,
         indexPathTransform: @escaping (IndexPath) -> IndexPath = { $0 }
     ) {
         performBatchUpdates({
+            updateData()
             let update = BatchUpdate(diff: diff, indexPathTransform: indexPathTransform)
             self.deleteItems(at: update.deletions)
             self.insertItems(at: update.insertions)
@@ -303,12 +309,14 @@ public extension UICollectionView {
     ///   - newData:            Data which reflects the current state of `UICollectionView`
     ///   - indexPathTransform: Closure which transforms zero-based `IndexPath` to desired  `IndexPath`
     ///   - sectionTransform:   Closure which transforms zero-based section(`Int`) into desired section(`Int`)
+    ///   - updateData:         Closure to be called immediately before performing updates, giving you a chance to correctly update data source
     ///   - completion:         Closure to be executed when the animation completes
     func animateItemAndSectionChanges<T: Collection>(
         oldData: T,
         newData: T,
         indexPathTransform: @escaping (IndexPath) -> IndexPath = { $0 },
         sectionTransform: @escaping (Int) -> Int = { $0 },
+        updateData: () -> Void,
         completion: ((Bool) -> Swift.Void)? = nil
     )
         where T.Element: Collection,
@@ -318,6 +326,7 @@ public extension UICollectionView {
             oldData.nestedExtendedDiff(to: newData),
             indexPathTransform: indexPathTransform,
             sectionTransform: sectionTransform,
+            updateData: updateData,
             completion: completion
         )
     }
@@ -330,6 +339,7 @@ public extension UICollectionView {
     ///   - isEqualElement:     A function comparing two items (elements of `T.Element`)
     ///   - indexPathTransform: Closure which transforms zero-based `IndexPath` to desired  `IndexPath`
     ///   - sectionTransform:   Closure which transforms zero-based section(`Int`) into desired section(`Int`)
+    ///   - updateData:         Closure to be called immediately before performing updates, giving you a chance to correctly update data source
     ///   - completion:         Closure to be executed when the animation completes
     func animateItemAndSectionChanges<T: Collection>(
         oldData: T,
@@ -337,6 +347,7 @@ public extension UICollectionView {
         isEqualElement: NestedElementEqualityChecker<T>,
         indexPathTransform: @escaping (IndexPath) -> IndexPath = { $0 },
         sectionTransform: @escaping (Int) -> Int = { $0 },
+        updateData: () -> Void,
         completion: ((Bool) -> Swift.Void)? = nil
     )
         where T.Element: Collection,
@@ -348,6 +359,7 @@ public extension UICollectionView {
             ),
             indexPathTransform: indexPathTransform,
             sectionTransform: sectionTransform,
+            updateData: updateData,
             completion: completion
         )
     }
@@ -360,6 +372,7 @@ public extension UICollectionView {
     ///   - isEqualSection:     A function comparing two sections (elements of `T`)
     ///   - indexPathTransform: Closure which transforms zero-based `IndexPath` to desired  `IndexPath`
     ///   - sectionTransform:   Closure which transforms zero-based section(`Int`) into desired section(`Int`)
+    ///   - updateData:         Closure to be called immediately before performing updates, giving you a chance to correctly update data source.
     ///   - completion:         Closure to be executed when the animation completes
     func animateItemAndSectionChanges<T: Collection>(
         oldData: T,
@@ -367,6 +380,7 @@ public extension UICollectionView {
         isEqualSection: EqualityChecker<T>,
         indexPathTransform: @escaping (IndexPath) -> IndexPath = { $0 },
         sectionTransform: @escaping (Int) -> Int = { $0 },
+        updateData: () -> Void,
         completion: ((Bool) -> Swift.Void)? = nil
     )
         where T.Element: Collection,
@@ -378,6 +392,7 @@ public extension UICollectionView {
             ),
             indexPathTransform: indexPathTransform,
             sectionTransform: sectionTransform,
+            updateData: updateData,
             completion: completion
         )
     }
@@ -391,6 +406,7 @@ public extension UICollectionView {
     ///   - isEqualElement:     A function comparing two items (elements of `T.Element`)
     ///   - indexPathTransform: Closure which transforms zero-based `IndexPath` to desired  `IndexPath`
     ///   - sectionTransform:   Closure which transforms zero-based section(`Int`) into desired section(`Int`)
+    ///   - updateData:         Closure to be called immediately before performing updates, giving you a chance to correctly update data source
     ///   - completion:         Closure to be executed when the animation completes
     func animateItemAndSectionChanges<T: Collection>(
         oldData: T,
@@ -399,6 +415,7 @@ public extension UICollectionView {
         isEqualElement: NestedElementEqualityChecker<T>,
         indexPathTransform: @escaping (IndexPath) -> IndexPath = { $0 },
         sectionTransform: @escaping (Int) -> Int = { $0 },
+        updateData: () -> Void,
         completion: ((Bool) -> Swift.Void)? = nil
     )
         where T.Element: Collection {
@@ -410,6 +427,7 @@ public extension UICollectionView {
             ),
             indexPathTransform: indexPathTransform,
             sectionTransform: sectionTransform,
+            updateData: updateData,
             completion: completion
         )
     }
@@ -418,9 +436,11 @@ public extension UICollectionView {
         _ diff: NestedExtendedDiff,
         indexPathTransform: @escaping (IndexPath) -> IndexPath = { $0 },
         sectionTransform: @escaping (Int) -> Int = { $0 },
+        updateData: () -> Void,
         completion: ((Bool) -> Void)? = nil
     ) {
         performBatchUpdates({
+            updateData()
             let update = NestedBatchUpdate(diff: diff, indexPathTransform: indexPathTransform, sectionTransform: sectionTransform)
             self.insertSections(update.sectionInsertions)
             self.deleteSections(update.sectionDeletions)
