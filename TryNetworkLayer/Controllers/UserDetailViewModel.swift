@@ -7,30 +7,30 @@
 //
 
 import Foundation
-import Bond
 
-class UserDetailViewModel {
+final class UserDetailViewModel {
     
     // MARK: Observables
-    
-    let username = Observable<String>("")
+
+    @Published var username: String = ""
     
     // MARK: Properties
-    
-    let usersRepo = UsersRepo()
-    var user: GHUserDetail?
-    
+
+    private(set) var user: GHUserDetail?
+    let usersRepo: UsersRepoProtocol
+
     // MARK: Methods
 
-    init(userLogin: String) {
-        self.fecthUser(userLogin: userLogin)
+    init(usersRepo: UsersRepoProtocol = UsersRepo(), userLogin: String) {
+        self.usersRepo = usersRepo
+        self.username = userLogin
     }
-    
-    func fecthUser(userLogin: String) {
-        usersRepo.fetchDetail(username: userLogin) { [unowned self] (user) in
+
+    func fecthUser() {
+        usersRepo.fetchDetail(username: username) { [weak self] (user) in
             if let user = user {
-                self.user = user
-                self.username.value = user.login!
+                self?.user = user
+                self?.username = user.login!
             }
         }
     }

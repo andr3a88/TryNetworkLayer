@@ -1,64 +1,84 @@
 disabled_rules:
-    - missing_docs
     - force_cast
-    - force_try
-    - variable_name
-    - type_name
     - trailing_whitespace
-    - cyclomatic_complexity
 
-opt_in_rules: # some rules are only opt-in
-    - empty_count
-    - missing_docs
+opt_in_rules:
+    - array_init
+    - closure_spacing
+    - contains_over_first_not_nil
+    - explicit_init
+    - extension_access_modifier
+    - fatal_error_message
+    - first_where
+    - implicit_return
+    - joined_default_parameter
+    - let_var_whitespace
+    - literal_expression_end_indentation
+    - operator_usage_whitespace
+    - overridden_super_call
+    - prohibited_super_call
+    - quick_discouraged_call
+    - sorted_imports
+    - vertical_parameter_alignment_on_call
+    - todo
+    - unowned_variable_capture
+    - duplicate_enum_cases
+    - unused_capture_list
+    - toggle_bool
+    - vertical_whitespace_closing_braces
+    - required_enum_case
+    - private_outlet
+    - switch_case_on_newline
+    - empty_xctest_method
 
-# Find all the available rules by running:
-# swiftlint rules
 included: # paths to include during linting. `--path` is ignored if present.
     - TryNetworkLayer
 
 excluded: # paths to ignore during linting. Takes precedence over `included`.
     - Pods
 
-# configurable rules can be customized from this configuration file
-# binary rules can set their severity level
-force_cast: warning # implicitly
-force_try:
-severity: warning # explicitly
-empty_count: warning
 
-# rules that have both warning and error levels, can set just the warning level
-# implicitly
-line_length: 180
-
-# they can set both implicitly with an array
-type_body_length:
-    - 800 # warning
-    - 1000 # error
-# or they can set both explicitly
+# These properties are marked as error by default.
+force_try: warning
 
 file_length:
-    warning: 800
-    error: 1200
+    warning: 500
+    error: 700
 
-# naming rules can set warnings/errors for min_length and max_length
-# additionally they can set excluded names
+function_body_length:
+    warning: 150
+    error: 200
+
+type_body_length:
+    warning: 300
+    error: 350
+
+function_parameter_count:
+    warning: 10
+    error: 15
+
+line_length:
+    warning: 160
+    error: 170
+
 type_name:
-    min_length: 3 # only warning
-    max_length: # warning and error
-        warning: 40
-        error: 50
+    min_length: 4
+    max_length:
+        warning: 50
+        error: 60
+    allowed_symbols: ["_"]
+    excluded:
+        - R
+        - D
 
-    excluded: iPhone # excluded via string
-
-variable_name:
-    min_length:  # only min_length
-        error: 2 # only error
-
-    excluded: # excluded via string array
+identifier_name:
+    min_length: 2
+    max_length:
+        warning: 50
+        error: 60
+    allowed_symbols: ["_"]
+    excluded:
         - id
-        - URL
-        - GlobalAPIKey
-        - Log
 
 reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, junit, html, emoji)
 
@@ -69,17 +89,29 @@ custom_rules:
         message: "There should be a space after //"
         severity: warning
 
-    force_https: # From https://github.com/Twigz/Game
-        name: "Force HTTPS over HTTP"
-        regex: "((?i)http(?!s))"
-        match_kinds: string
-        message: "HTTPS should be favored over HTTP"
-        severity: warning
-
     double_space: # From https://github.com/IBM-Swift/Package-Builder
         include: "*.swift"
         name: "Double space"
         regex: "([a-z,A-Z] \\s+)"
         message: "Double space between keywords"
         match_kinds: keyword
+        severity: warning
+
+    mark_newline:
+        include: "*.swift"
+        name: "MARK new line"
+        regex: "(^ *\\/\\/ MARK:\ [ a-zA-Z0-9=?.\\(\\)\\{\\}:,><!-]*\n *(?!(?:\\}|return))\\S+)"
+        message: "// MARK: should have new line after"
+        severity: warning
+
+    empty_line_after_super:
+        name: "Empty Line After Super"
+        regex: "(^ *super\\.[ a-zA-Z0-9=?.\\(\\)\\{\\}:,><!]*\n *(?!(?:\\}|return))\\S+)"
+        message: "There should be an empty line after super"
+        severity: warning
+
+    new_line_between_import:
+        name: "New line between import"
+        regex: "import(.*?)\n\n+import"
+        message: "No new line between import"
         severity: warning

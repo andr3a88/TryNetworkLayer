@@ -1,0 +1,19 @@
+{
+    "request": {
+        "method": "GET",
+        "url": "/users/andr3a88",
+        "headers": {
+            "Content-Type": {
+                "equalTo": "application/json"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "bodyFileName": "users/detail.json",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}
+

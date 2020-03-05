@@ -17,7 +17,7 @@ public final class GHSearchResponse: Codable {
 
     // MARK: Properties
 
-    public var incompleteResults: Bool? = false
-    public var totalCount: Int?
-    public var items: [GHUser]?
+    public var incompleteResults: Bool = false
+    public var totalCount: Int = 0
+    public var items: [GHUser] = []
 }

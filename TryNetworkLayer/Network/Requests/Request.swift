@@ -11,10 +11,10 @@ import Foundation
 /// Define the type of data we expect as response
 ///
 /// - JSON: json data
-/// - Data: plain data
+/// - data: plain data
 public enum DataType {
     case JSON
-    case Data
+    case data
 }
 
 /// This is the Request protocol you may implement as classic class object for each kind of request.
@@ -30,7 +30,7 @@ public protocol Request {
 
     /// These are the parameters we need to send along with the call.
     /// Params can be passed into the body or along with the URL
-    var parameters: RequestParams? { get }
+    var parameters: RequestParameters? { get }
 
     /// You may also define a list of headers to pass along with each request.
     var headers: [String: Any]? { get }
@@ -59,7 +59,7 @@ public enum HTTPMethod: String {
 ///
 /// - body: part of the body stream
 /// - url: as url parameters
-public enum RequestParams {
-    case body(_: [String: Any]?)
-    case url(_: [String: Any]?)
+public enum RequestParameters {
+    case body(_: [String: Any])
+    case url(_: [String: String?])
 }

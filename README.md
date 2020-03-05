@@ -1,8 +1,9 @@
-# TryNetworkLayer
+## Combine + UIKit + MVVM + POP Network Layer
 
-Clean and testable network layer 
+Sample project with Combine, UIKit and MVVM architecture. Clean and testable network layer with protocol oriented programming.
 
 + Architecture: *MVVM*
-+ Network layer: *Alamofire*
++ Network layer: *Alamofire* 
 + Local persistence: *Realm*
-+ *SwiftBond* as UI binding framework
++ FRP framework: *Combine*
++ Swift Package Manager + Carthage (no Cocoapods allowed)

@@ -6,14 +6,17 @@
 //  Copyright © 2019 Andrea Stevanato All rights reserved.
 //
 
+import Combine
 import UIKit
 
-class UsersViewController: UITableViewController {
+final class UsersViewController: UITableViewController {
     
     // MARK: Properties
-    
-    let viewModel = UsersViewModel()
+
     let searchController = UISearchController(searchResultsController: nil)
+
+    private let viewModel = UsersViewModel()
+    private var bindings = Set<AnyCancellable>()
     
     // MARK: View Management
     
@@ -26,27 +29,34 @@ class UsersViewController: UITableViewController {
     }
     
     func setupObservers() {
-        _ = viewModel.updateView.observeNext { [unowned self] (updateView) in
-            if updateView {
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            }
+
+        let updateTableHandler: (Bool) -> Void = { [weak self] state in
+            self?.tableView.reloadData()
         }
+
+        viewModel.$updateView
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: updateTableHandler)
+            .store(in: &bindings)
     }
     
     func setupSearchController() {
         searchController.searchBar.delegate = self
         searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleleAllUsers))
+    }
+
+    @objc func deleleAllUsers() {
+        viewModel.deleleAllUsers()
     }
     
     // MARK: Table view data source
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.numberOfUsers()
+        viewModel.numberOfUsers()
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -60,10 +70,11 @@ class UsersViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "UserDetailViewController") as! UserDetailViewController
+        let userDetailViewController = UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewController(withIdentifier: "UserDetailViewController") as! UserDetailViewController
         let user = viewModel.userAt(indexPath: indexPath)
-        vc.viewModel = UserDetailViewModel(userLogin: user.login!)
-        self.navigationController?.pushViewController(vc, animated: true)
+        userDetailViewController.viewModel = UserDetailViewModel(userLogin: user.login)
+        self.navigationController?.pushViewController(userDetailViewController, animated: true)
     }
 }
 
@@ -82,6 +93,5 @@ extension UsersViewController: UISearchBarDelegate {
 extension UsersViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
-
     }
 }

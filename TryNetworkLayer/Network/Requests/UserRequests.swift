@@ -11,7 +11,7 @@ import Foundation
 public enum UserRequests: Request {
     
     case detail(username: String)
-    case searchUsers(query: String)
+    case searchUsers(query: String, perPage: Int, page: Int)
     
     public var path: String {
         switch self {
@@ -31,12 +31,14 @@ public enum UserRequests: Request {
         }
     }
     
-    public var parameters: RequestParams? {
+    public var parameters: RequestParameters? {
         switch self {
         case .detail:
             return .url([:])
-        case .searchUsers(let query):
-            return .url(["q": query])
+        case .searchUsers(let query, let perPage, let page):
+            return .url(["q": query,
+                         "per_page": String(perPage),
+                         "page": String(page)])
         }
     }
     

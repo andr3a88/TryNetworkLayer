@@ -6,43 +6,53 @@
 //  Copyright © 2019 Andrea Stevanato All rights reserved.
 //
 
+import Combine
 import Foundation
-import Bond
 
-class UsersViewModel {
+final class UsersViewModel: ObservableObject {
     
     // MARK: Observables
-    
-    let updateView = Observable<Bool>(false)
-    
+
+    @Published var updateView: Bool = false
+
     // MARK: Properties
     
-    let usersRepo = UsersRepo()
-    fileprivate var users: [GHUser] = []
+    let usersRepo: UsersRepoProtocol
+    private(set) var users: [GHUser] = []
     
     // MARK: Methods
+
+    init(usersRepo: UsersRepoProtocol = UsersRepo()) {
+        self.usersRepo = usersRepo
+    }
     
     func fecthUsers() {
-        usersRepo.fetch(fromStorage: true, query: "language:swift") { [unowned self] (users) in
-            self.users = users
-            self.updateView.value = true
+        usersRepo.fetch(fromStorage: true, query: "language:swift") { [weak self] (users) in
+            self?.users = users
+            self?.updateView = true
         }
     }
     
     func searchUsers(query: String) {
-        usersRepo.fetch(fromStorage: false, query: query) { [unowned self] (users) in
-            self.users = users
-            self.updateView.value = true
+        usersRepo.fetch(fromStorage: false, query: query) { [weak self] (users) in
+            self?.users = users
+            self?.updateView = true
         }
+    }
+
+    func deleleAllUsers() {
+        self.users.removeAll()
+        usersRepo.deleteAll()
+        self.updateView = true
     }
     
     // Table view getter
     
     func numberOfUsers() -> Int {
-        return users.count
+        users.count
     }
     
     func userAt(indexPath: IndexPath) -> GHUser {
-        return users[indexPath.row]
+        users[indexPath.row]
     }
 }

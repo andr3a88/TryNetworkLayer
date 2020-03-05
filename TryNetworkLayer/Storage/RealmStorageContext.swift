@@ -16,10 +16,11 @@ public enum ConfigurationType {
     
     var associated: String? {
         switch self {
-        case .basic(let identifier): return identifier
-        case .inMemory(let identifier): return identifier
+        case .basic(let identifier):
+            return identifier
+        case .inMemory(let identifier):
+            return identifier
         }
-        
     }
 }
 

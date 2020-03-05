@@ -6,23 +6,34 @@
 //  Copyright © 2019 Andrea Stevanato All rights reserved.
 //
 
+import Combine
 import UIKit
 
-class UserDetailViewController: UIViewController {
+final  class UserDetailViewController: UIViewController {
 
-    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak private var usernameLabel: UILabel!
     
     var viewModel: UserDetailViewModel!
-    
+    private var bindings = Set<AnyCancellable>()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.setupObservers()
+        self.viewModel.fecthUser()
     }
     
     func setupObservers() {
-        _ = viewModel.username.observeNext(with: { [unowned self] (username) in
-            self.usernameLabel.text = username
-        })
+        let usernameHandler: (String) -> Void = { [weak self] username in
+            self?.usernameLabel.text = username
+        }
+
+        viewModel.$username
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: usernameHandler)
+            .store(in: &bindings)
+
+        // not working
+        // viewModel.$username.assign(to: \.text, on: usernameLabel)
     }
 }

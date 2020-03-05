@@ -6,8 +6,8 @@
 //  Copyright © 2019 Andrea Stevanato All rights reserved.
 //
 
-import Foundation
 import Alamofire
+import Foundation
 
 public class Response {
     
@@ -17,23 +17,36 @@ public class Response {
     var data: Data?
     var error: Error?
     
-    init(_ dataResponse: DataResponse<Any>, for request: Request) {
-        
-        guard dataResponse.response?.statusCode == 200, dataResponse.error == nil else {
+    init(_ dataResponse: AFDataResponse<Any>, for request: Request) {
+
+        // response validation
+        guard let statusCode = dataResponse.response?.statusCode else {
+            self.error = dataResponse.error
+            return
+        }
+        if statusCode == 401, dataResponse.error == nil {
+            self.error = NetworkError.notAuthorized
+            return
+        }
+        if statusCode == 403, dataResponse.error == nil {
+            self.error = NetworkError.forbidden
+            return
+        }
+        guard Array(200 ... 299).contains(statusCode), dataResponse.error == nil else {
             self.error = dataResponse.error
             return
         }
         guard let data = dataResponse.data else {
-            self.error = NetworkErrors.noData
+            self.error = NetworkError.noData
             return
         }
-        guard let json = dataResponse.result.value as? JSON else {
-            self.error = NetworkErrors.noData
+        guard let json = dataResponse.value as? JSON else {
+            self.error = NetworkError.noData
             return
         }
         
         switch request.dataType {
-        case .Data:
+        case .data:
             self.data = data
         case .JSON:
             self.json = json

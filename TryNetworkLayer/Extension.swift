@@ -31,6 +31,6 @@ public extension JSONDecoder {
     /// - Returns: Codable object
     /// - Throws: Error if failed
     static func decode<T: Codable>(_ data: Data, to type: T.Type) throws -> T {
-        return try JSONDecoder().decode(T.self, from: data)
+        try JSONDecoder().decode(T.self, from: data)
     }
 }

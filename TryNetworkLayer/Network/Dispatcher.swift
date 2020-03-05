@@ -6,8 +6,8 @@
 //  Copyright © 2019 Andrea Stevanato All rights reserved.
 //
 
-import Foundation
 import Alamofire
+import Foundation
 
 /// The dispatcher is responsible to execute a Request by calling the underlyning layer (Alamofire or just a fake dispatcher which return mocked results).
 /// As output for a Request it should provide a Response.
@@ -25,5 +25,4 @@ protocol Dispatcher {
     ///   - completion: completion handler for the request
     /// - Throws: error
     func execute(request: Request, completion: @escaping (_ response: Response) -> Void) throws
-    
 }

@@ -12,6 +12,7 @@ import RealmSwift
 public final class GHUser: Object, Codable {
     
     // MARK: Declaration for string constants to be used to decode and also serialize.
+    
     enum CodingKeys: String, CodingKey {
         case organizationsUrl = "organizations_url"
         case score = "score"
@@ -29,6 +30,7 @@ public final class GHUser: Object, Codable {
     }
     
     // MARK: Properties
+
     @objc dynamic public var organizationsUrl: String?
     @objc dynamic public var score: Float = 0
     @objc dynamic public var reposUrl: String?
@@ -36,7 +38,7 @@ public final class GHUser: Object, Codable {
     @objc dynamic public var gravatarId: String?
     @objc dynamic public var avatarUrl: String?
     @objc dynamic public var type: String?
-    @objc dynamic public var login: String?
+    @objc dynamic public var login: String = ""
     @objc dynamic public var followersUrl: String?
     @objc dynamic public var id: Int = 0
     @objc dynamic public var subscriptionsUrl: String?
@@ -46,7 +48,7 @@ public final class GHUser: Object, Codable {
     // MARK: Primary Key
     
     override public static func primaryKey() -> String? {
-        return "id"
+        "id"
     }
     
     // MARK: Init

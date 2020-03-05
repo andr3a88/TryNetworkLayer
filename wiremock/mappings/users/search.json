@@ -1,0 +1,29 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/search/users",
+        "headers": {
+            "Content-Type": {
+                "equalTo": "application/json"
+            }
+        },
+        "queryParameters": {
+            "q": {
+                "matches": "[a-zA-Z0-9_]+"
+            },
+            "per_page": {
+                "matches": "[a-zA-Z0-9_.]+"
+            },
+            "page": {
+                "matches": "[a-zA-Z0-9_.]+"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "bodyFileName": "users/search.json",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

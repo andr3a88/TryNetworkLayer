@@ -6,18 +6,35 @@
 //  Copyright © 2019 Andrea Stevanato All rights reserved.
 //
 
-import Foundation
 import Alamofire
+import Foundation
 
-public enum NetworkErrors: Error {
+public enum NetworkError: Error {
     case badInput
     case noData
+    case forbidden
+    case notAuthorized
+}
+
+extension NetworkError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .badInput:
+            return NSLocalizedString("Bad input", comment: "")
+        case .noData:
+            return NSLocalizedString("No data", comment: "")
+        case .forbidden:
+            return NSLocalizedString("Forbiddden", comment: "")
+        case .notAuthorized:
+            return NSLocalizedString("Not authorized", comment: "")
+        }
+    }
 }
 
 public class NetworkDispatcher: Dispatcher {
     
     private var environment: Environment
-    private var sessionManager: SessionManager
+    private var sessionManager: Session
     
     required public init(environment: Environment) {
         self.environment = environment
@@ -33,12 +50,12 @@ public class NetworkDispatcher: Dispatcher {
         configuration.httpCookieStorage = HTTPCookieStorage.shared
         configuration.httpShouldSetCookies = false
         
-        self.sessionManager = Alamofire.SessionManager(configuration: configuration)
+        self.sessionManager = Alamofire.Session(configuration: configuration)
     }
     
     public func execute(request: Request, completion: @escaping (_ response: Response) -> Void) throws {
-        let rq = try self.prepareURLRequest(for: request)
-        self.sessionManager.request(rq)
+        let req = try self.prepareURLRequest(for: request)
+        self.sessionManager.request(req)
             .validate()
             .responseJSON { response in
                 completion(Response(response, for: request))
@@ -47,43 +64,55 @@ public class NetworkDispatcher: Dispatcher {
     
     private func prepareURLRequest(for request: Request) throws -> URLRequest {
         // Compose the url
-        let full_url = "\(environment.host)/\(request.path)"
-        var url_request = URLRequest(url: URL(string: full_url)!)
+        let fullUrl = "\(environment.host)/\(request.path)"
+        var urlRequest = URLRequest(url: URL(string: fullUrl)!)
         
         // Working with parameters
         if let parameters = request.parameters {
             switch parameters {
             case .body(let params):
                 // Parameters are part of the body
-                if let params = params as? [String: String] { // just to simplify
-                    url_request.httpBody = try JSONSerialization.data(withJSONObject: params, options: .init(rawValue: 0))
+                if let params = params as? [String: String] {
+                    urlRequest.httpBody = try JSONSerialization.data(withJSONObject: params, options: .init(rawValue: 0))
                 } else {
-                    throw NetworkErrors.badInput
+                    throw NetworkError.badInput
                 }
             case .url(let params):
                 // Parameters are part of the url
-                if let params = params as? [String: String] { // just to simplify
-                    let query_params = params.map({ (element) -> URLQueryItem in
-                        return URLQueryItem(name: element.key, value: element.value)
-                    })
-                    guard var components = URLComponents(string: full_url) else {
-                        throw NetworkErrors.badInput
-                    }
-                    components.queryItems = query_params
-                    url_request.url = components.url
-                } else {
-                    throw NetworkErrors.badInput
+                let queryParams = self.getQueryParams(params: params)
+                guard var components = URLComponents(string: fullUrl) else {
+                    throw NetworkError.badInput
                 }
+                components.queryItems = queryParams
+                urlRequest.url = components.url
             }
         }
         
-        // Add headers from enviornment and request
-        environment.headers.forEach { url_request.addValue($0.value as! String, forHTTPHeaderField: $0.key) }
-        request.headers?.forEach { url_request.addValue($0.value as! String, forHTTPHeaderField: $0.key) }
+        // Add headers from environment and request
+        environment.headers.forEach { urlRequest.addValue($0.value as! String, forHTTPHeaderField: $0.key) }
+        request.headers?.forEach { urlRequest.addValue($0.value as! String, forHTTPHeaderField: $0.key) }
         
         // Setup HTTP method
-        url_request.httpMethod = request.method.rawValue
+        urlRequest.httpMethod = request.method.rawValue
         
-        return url_request
+        return urlRequest
+    }
+
+    private func getQueryParams(params: [String: Any?]) -> [URLQueryItem] {
+        let paramsFiltered = params.filter({ (arg) -> Bool in
+            let (_, value) = arg
+            return value != nil ? true : false
+        })
+        var queryItems: [URLQueryItem] = []
+        paramsFiltered.forEach({ (key: String, value: Any?) in
+            if let array = value as? [String] {
+                for paramValue in array {
+                    queryItems.append(URLQueryItem(name: key, value: paramValue))
+                }
+            } else if let value = value as? String {
+                queryItems.append(URLQueryItem(name: key, value: value))
+            }
+        })
+        return queryItems
     }
 }
