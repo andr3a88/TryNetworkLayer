@@ -38,7 +38,7 @@ final class UsersRepo: UsersRepoProtocol {
             print("\(error.localizedDescription)")
             fatalError("Cannot initialize Storage Context")
         }
-        self.dispatcher = NetworkDispatcher(environment: Environment("Github", host: "http://localhost:3900"))
+        self.dispatcher = NetworkDispatcher(environment: Environment("Github", host: "https://api.github.com"))
         self.usersOperation = UsersOperation(query: "")
         self.userDetailOperation = UserDetailOperation(username: "")
     }

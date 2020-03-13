@@ -6,8 +6,11 @@
 //  Copyright © 2019 Andrea Stevanato All rights reserved.
 //
 
-import Combine
 import Foundation
+
+protocol UsersViewModelCoordinatorDelegate: class {
+    func usersViewModelPresent(user: GHUser)
+}
 
 final class UsersViewModel: ObservableObject {
     
@@ -16,6 +19,8 @@ final class UsersViewModel: ObservableObject {
     @Published var updateView: Bool = false
 
     // MARK: Properties
+
+    weak var coordinatorDelegate: UsersViewModelCoordinatorDelegate?
     
     let usersRepo: UsersRepoProtocol
     private(set) var users: [GHUser] = []
@@ -46,7 +51,7 @@ final class UsersViewModel: ObservableObject {
         self.updateView = true
     }
     
-    // Table view getter
+    // MARK: Table view getter
     
     func numberOfUsers() -> Int {
         users.count
@@ -54,5 +59,11 @@ final class UsersViewModel: ObservableObject {
     
     func userAt(indexPath: IndexPath) -> GHUser {
         users[indexPath.row]
+    }
+
+    // MARK: Coordinator
+
+    func presentUserDetail(user: GHUser) {
+        coordinatorDelegate?.usersViewModelPresent(user: user)
     }
 }

@@ -6,7 +6,7 @@
 //  Copyright © 2018 Andrea Stevanato All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 /// Convert json dictionary, data to Codable objects
 public extension JSONDecoder {
@@ -32,5 +32,13 @@ public extension JSONDecoder {
     /// - Throws: Error if failed
     static func decode<T: Codable>(_ data: Data, to type: T.Type) throws -> T {
         try JSONDecoder().decode(T.self, from: data)
+    }
+}
+
+public extension UIViewController {
+
+    /// The storyboard identifier for the controller
+    static var storyboardIdentifier: String {
+        self.description().components(separatedBy: ".").dropFirst().joined(separator: ".")
     }
 }

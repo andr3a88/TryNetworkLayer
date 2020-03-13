@@ -36,6 +36,11 @@
 		65BBB98B1F4C1BFE001A378C /* UserRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BBB9831F4C1BFE001A378C /* UserRequests.swift */; };
 		65BBB98C1F4C1BFE001A378C /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BBB9841F4C1BFE001A378C /* Response.swift */; };
 		65BBB98F1F4C20EF001A378C /* GHUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BBB98E1F4C20EF001A378C /* GHUser.swift */; };
+		FC1520F5241B96FD000B6071 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1520F4241B96FD000B6071 /* SceneDelegate.swift */; };
+		FC1520F8241B981B000B6071 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1520F7241B981B000B6071 /* AppCoordinator.swift */; };
+		FC1520FA241B9C04000B6071 /* UsersCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1520F9241B9C04000B6071 /* UsersCoordinator.swift */; };
+		FC1520FC241B9C1A000B6071 /* UserDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1520FB241B9C1A000B6071 /* UserDetailCoordinator.swift */; };
+		FC152100241BA0EA000B6071 /* Storyboards.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1520FD241B9EE0000B6071 /* Storyboards.swift */; };
 		FC9561342410054700E47427 /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9561332410054700E47427 /* TestUtils.swift */; };
 		FC9561372410086300E47427 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FC9561362410086300E47427 /* Alamofire */; };
 		FC95613A24100ADF00E47427 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC95613924100ADE00E47427 /* Realm.framework */; };
@@ -94,6 +99,11 @@
 		65BBB9831F4C1BFE001A378C /* UserRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserRequests.swift; sourceTree = "<group>"; };
 		65BBB9841F4C1BFE001A378C /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		65BBB98E1F4C20EF001A378C /* GHUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GHUser.swift; sourceTree = "<group>"; };
+		FC1520F4241B96FD000B6071 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		FC1520F7241B981B000B6071 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		FC1520F9241B9C04000B6071 /* UsersCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersCoordinator.swift; sourceTree = "<group>"; };
+		FC1520FB241B9C1A000B6071 /* UserDetailCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailCoordinator.swift; sourceTree = "<group>"; };
+		FC1520FD241B9EE0000B6071 /* Storyboards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storyboards.swift; sourceTree = "<group>"; };
 		FC9561332410054700E47427 /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUtils.swift; sourceTree = "<group>"; };
 		FC95613924100ADE00E47427 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
 		FC95613B24100AE100E47427 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
@@ -148,10 +158,8 @@
 		65197A6C1F5CB250007C8C64 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				65197A6F1F5CB269007C8C64 /* UsersViewController.swift */,
-				65197A701F5CB269007C8C64 /* UsersViewModel.swift */,
-				65197A6D1F5CB269007C8C64 /* UserDetailViewController.swift */,
-				65197A6E1F5CB269007C8C64 /* UserDetailViewModel.swift */,
+				FC1520F2241B9666000B6071 /* Users */,
+				FC1520F3241B9670000B6071 /* UserDetail */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -199,13 +207,15 @@
 			children = (
 				65BBB9511F4B3425001A378C /* Assets.xcassets */,
 				65BBB94A1F4B3425001A378C /* AppDelegate.swift */,
+				FC1520F4241B96FD000B6071 /* SceneDelegate.swift */,
 				6530425D20C6C196002B373E /* Extension.swift */,
+				FC1520FF241B9EED000B6071 /* Storyboards */,
+				FC1520F6241B9809000B6071 /* Coordinator */,
 				65197A6C1F5CB250007C8C64 /* Controllers */,
 				65BBB98D1F4C20EF001A378C /* Models */,
 				65197A511F5AAA20007C8C64 /* Repository */,
 				65197A4C1F5AA951007C8C64 /* Storage */,
 				65BBB96A1F4B354F001A378C /* Network */,
-				65BBB94E1F4B3425001A378C /* Main.storyboard */,
 				65BBB9531F4B3425001A378C /* LaunchScreen.storyboard */,
 				65BBB9561F4B3425001A378C /* Info.plist */,
 			);
@@ -216,6 +226,7 @@
 			isa = PBXGroup;
 			children = (
 				FC9561332410054700E47427 /* TestUtils.swift */,
+				FC152101241BF64E000B6071 /* Coordinator */,
 				FC95613D2411103100E47427 /* Controllers */,
 				65262AE221AED089005AE7C9 /* Repository */,
 				65262AE121AED069005AE7C9 /* Network */,
@@ -276,11 +287,71 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		FC95613D2411103100E47427 /* Controllers */ = {
+		FC1520F2241B9666000B6071 /* Users */ = {
+			isa = PBXGroup;
+			children = (
+				FC1520F9241B9C04000B6071 /* UsersCoordinator.swift */,
+				65197A6F1F5CB269007C8C64 /* UsersViewController.swift */,
+				65197A701F5CB269007C8C64 /* UsersViewModel.swift */,
+			);
+			path = Users;
+			sourceTree = "<group>";
+		};
+		FC1520F3241B9670000B6071 /* UserDetail */ = {
+			isa = PBXGroup;
+			children = (
+				FC1520FB241B9C1A000B6071 /* UserDetailCoordinator.swift */,
+				65197A6D1F5CB269007C8C64 /* UserDetailViewController.swift */,
+				65197A6E1F5CB269007C8C64 /* UserDetailViewModel.swift */,
+			);
+			path = UserDetail;
+			sourceTree = "<group>";
+		};
+		FC1520F6241B9809000B6071 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				FC1520F7241B981B000B6071 /* AppCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		FC1520FF241B9EED000B6071 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				FC1520FD241B9EE0000B6071 /* Storyboards.swift */,
+				65BBB94E1F4B3425001A378C /* Main.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		FC152101241BF64E000B6071 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		FC152102241BF70C000B6071 /* Users */ = {
 			isa = PBXGroup;
 			children = (
 				FC9561402411106500E47427 /* UsersViewModelTests.swift */,
+			);
+			path = Users;
+			sourceTree = "<group>";
+		};
+		FC152103241BF716000B6071 /* UserDetail */ = {
+			isa = PBXGroup;
+			children = (
 				FC95613E2411105000E47427 /* UserDetailViewModelTests.swift */,
+			);
+			path = UserDetail;
+			sourceTree = "<group>";
+		};
+		FC95613D2411103100E47427 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				FC152102241BF70C000B6071 /* Users */,
+				FC152103241BF716000B6071 /* UserDetail */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -304,11 +375,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 65BBB9641F4B3425001A378C /* Build configuration list for PBXNativeTarget "TryNetworkLayer" */;
 			buildPhases = (
+				4E252DEC61C97C04A6BAE960 /* Timing START */,
 				65BBB9431F4B3425001A378C /* Sources */,
 				65BBB9441F4B3425001A378C /* Frameworks */,
 				65BBB9451F4B3425001A378C /* Resources */,
 				65197A5A1F5AADC3007C8C64 /* SwiftLint */,
 				FC95613824100A9900E47427 /* Carthage */,
+				6457C2E31F4AD98BCFBE52AA /* Timing END */,
 			);
 			buildRules = (
 			);
@@ -326,9 +399,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 65BBB9671F4B3425001A378C /* Build configuration list for PBXNativeTarget "TryNetworkLayerTests" */;
 			buildPhases = (
+				26E04812A9C40B16357A5A6C /* Timing START */,
 				65BBB9571F4B3425001A378C /* Sources */,
 				65BBB9581F4B3425001A378C /* Frameworks */,
 				65BBB9591F4B3425001A378C /* Resources */,
+				FB5B7AE41C9376C5EA21F158 /* Timing END */,
 			);
 			buildRules = (
 			);
@@ -410,6 +485,60 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		26E04812A9C40B16357A5A6C /* Timing START */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Timing START";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "      DATE=`date \"+%Y-%m-%dT%H:%M:%S.%s\"`\n      echo \"{\\\"date\\\":\\\"$DATE\\\", \\\"taskName\\\":\\\"$TARGETNAME\\\", \\\"event\\\":\\\"start\\\"},\" >> ~/.timings.xcode\n";
+		};
+		4E252DEC61C97C04A6BAE960 /* Timing START */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Timing START";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "      DATE=`date \"+%Y-%m-%dT%H:%M:%S.%s\"`\n      echo \"{\\\"date\\\":\\\"$DATE\\\", \\\"taskName\\\":\\\"$TARGETNAME\\\", \\\"event\\\":\\\"start\\\"},\" >> ~/.timings.xcode\n";
+		};
+		6457C2E31F4AD98BCFBE52AA /* Timing END */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Timing END";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "      DATE=`date \"+%Y-%m-%dT%H:%M:%S.%s\"`\n      echo \"{\\\"date\\\":\\\"$DATE\\\", \\\"taskName\\\":\\\"$TARGETNAME\\\", \\\"event\\\":\\\"end\\\"},\" >> ~/.timings.xcode\n";
+		};
 		65197A5A1F5AADC3007C8C64 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -423,6 +552,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\n    echo \"\" >/dev/null;\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		FB5B7AE41C9376C5EA21F158 /* Timing END */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Timing END";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "      DATE=`date \"+%Y-%m-%dT%H:%M:%S.%s\"`\n      echo \"{\\\"date\\\":\\\"$DATE\\\", \\\"taskName\\\":\\\"$TARGETNAME\\\", \\\"event\\\":\\\"end\\\"},\" >> ~/.timings.xcode\n";
 		};
 		FC95613824100A9900E47427 /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -455,16 +602,20 @@
 			files = (
 				6530425E20C6C196002B373E /* Extension.swift in Sources */,
 				65BBB98F1F4C20EF001A378C /* GHUser.swift in Sources */,
+				FC1520FA241B9C04000B6071 /* UsersCoordinator.swift in Sources */,
 				65197A501F5AA9DC007C8C64 /* StorageContext.swift in Sources */,
 				65197A721F5CB269007C8C64 /* UserDetailViewModel.swift in Sources */,
 				65574E4F1F4CB28B000D717E /* GHSearchResponse.swift in Sources */,
 				65BBB98B1F4C1BFE001A378C /* UserRequests.swift in Sources */,
+				FC1520F5241B96FD000B6071 /* SceneDelegate.swift in Sources */,
 				65197A641F5CB0DD007C8C64 /* UserDetailOperation.swift in Sources */,
 				65197A621F5CAE49007C8C64 /* GHUserDetail.swift in Sources */,
 				65BBB98A1F4C1BFE001A378C /* Request.swift in Sources */,
 				65BBB9891F4C1BFE001A378C /* Operation.swift in Sources */,
 				65197A731F5CB269007C8C64 /* UsersViewController.swift in Sources */,
+				FC1520F8241B981B000B6071 /* AppCoordinator.swift in Sources */,
 				65197A741F5CB269007C8C64 /* UsersViewModel.swift in Sources */,
+				FC152100241BA0EA000B6071 /* Storyboards.swift in Sources */,
 				65BBB98C1F4C1BFE001A378C /* Response.swift in Sources */,
 				65197A531F5AAA52007C8C64 /* UsersRepo.swift in Sources */,
 				65BBB9881F4C1BFE001A378C /* UsersOperation.swift in Sources */,
@@ -474,6 +625,7 @@
 				65197A4E1F5AA976007C8C64 /* Storable.swift in Sources */,
 				65197A711F5CB269007C8C64 /* UserDetailViewController.swift in Sources */,
 				65BBB9851F4C1BFE001A378C /* Dispatcher.swift in Sources */,
+				FC1520FC241B9C1A000B6071 /* UserDetailCoordinator.swift in Sources */,
 				65197A551F5AAD26007C8C64 /* RealmStorageContext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

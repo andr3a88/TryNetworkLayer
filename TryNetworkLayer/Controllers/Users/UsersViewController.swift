@@ -15,7 +15,7 @@ final class UsersViewController: UITableViewController {
 
     let searchController = UISearchController(searchResultsController: nil)
 
-    private let viewModel = UsersViewModel()
+    var viewModel: UsersViewModel!
     private var bindings = Set<AnyCancellable>()
     
     // MARK: View Management
@@ -70,11 +70,8 @@ final class UsersViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let userDetailViewController = UIStoryboard(name: "Main", bundle: nil)
-            .instantiateViewController(withIdentifier: "UserDetailViewController") as! UserDetailViewController
         let user = viewModel.userAt(indexPath: indexPath)
-        userDetailViewController.viewModel = UserDetailViewModel(userLogin: user.login)
-        self.navigationController?.pushViewController(userDetailViewController, animated: true)
+        self.viewModel.presentUserDetail(user: user)
     }
 }
 
